@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String EXTRA_MOVIE = "com.example.mymoviesco.EXTRA_MOVIE";
+
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void showList(List<Movie> movieList){
+    public void showList(final List<Movie> movieList){
         /*Initialization*/
         mRecyclerView = findViewById(R.id.recyclerView);
         //mRecyclerView.setHasFixedSize(true);//Recycler view doesn't change in size (Increase performance)
@@ -63,9 +66,11 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter.setOnItemListener(new MyAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-                //Give details in another page
-
+            public void onItemClick(int position) {//Open new Activity to display details of the movie
+                //Give movie selected in another page
+                Intent intent = new Intent(getApplicationContext(), DetailsMovie.class);
+                intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
+                startActivity(intent);
             }
         });
     }

@@ -1,5 +1,8 @@
 package com.example.mymoviesco;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -10,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity (tableName = "Movie")
-public class Movie {
+public class Movie implements Parcelable {
     @PrimaryKey
     @SerializedName("id")
     private int id;
@@ -94,6 +97,62 @@ public class Movie {
         watchlist = false;
         watched = false;
         unwatched = false;
+    }
+
+    protected Movie(Parcel in) {
+        id = in.readInt();
+        popularity = in.readDouble();
+        vote_count = in.readInt();
+        video = in.readByte() != 0;
+        poster_path = in.readString();
+        adult = in.readByte() != 0;
+        backdrop_path = in.readString();
+        original_language = in.readString();
+        original_title = in.readString();
+        title = in.readString();
+        vote_average = in.readDouble();
+        overview = in.readString();
+        release_date = in.readString();
+        watchlist = in.readByte() != 0;
+        watched = in.readByte() != 0;
+        unwatched = in.readByte() != 0;
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeDouble(popularity);
+        parcel.writeInt(vote_count);
+        parcel.writeByte((byte) (video ? 1 : 0));
+        parcel.writeString(poster_path);
+        parcel.writeByte((byte) (adult ? 1 : 0));
+        parcel.writeString(backdrop_path);
+        parcel.writeString(original_language);
+        parcel.writeString(original_title);
+        parcel.writeString(title);
+        parcel.writeDouble(vote_average);
+        parcel.writeString(overview);
+        parcel.writeString(release_date);
+        parcel.writeByte((byte) (watchlist ? 1 : 0));
+        parcel.writeByte((byte) (watched ? 1 : 0));
+        parcel.writeByte((byte) (unwatched ? 1 : 0));
     }
 
     public void setUnwatched(boolean unwatched) {
