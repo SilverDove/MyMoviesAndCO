@@ -1,5 +1,6 @@
 package com.example.mymoviesco;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,52 +10,97 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private ArrayList<Items> mListItems;
+    private List<Movie> movies;
+    private Context context;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemListener(OnItemClickListener listener){
+            mListener = listener;
+    }
+
+    public static final String IMAGE_URL_BASE_PATH="http://image.tmdb.org/t/p/w342//";
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         /*Elements for one item*/
-        public ImageView mImageView;//contains ImageView of our item
+        public ImageView mImageMovie;//contains ImageView of our item
         public TextView mTitle;//contains TextView of our item
+        public TextView mDate;
         public TextView mDescription;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public ImageView mImageRating;//contains ImageView of our item
+        public TextView mRatings;//contains TextView of our item
+
+        public MyViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             /*Assign references to our views*/
-            mImageView = itemView.findViewById(R.id.imageView);
+            mImageMovie = itemView.findViewById(R.id.movie_image);
             mTitle = itemView.findViewById(R.id.title);
+            mDate = itemView.findViewById(R.id.date);
             mDescription = itemView.findViewById(R.id.description);
+
+            mImageRating = itemView.findViewById(R.id.rating_image);
+            mRatings = itemView.findViewById(R.id.rating);
+
+            //When we click on the item
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        int position = getAdapterPosition();//Provide the position of the item
+                        if(position != RecyclerView.NO_POSITION){//Verify that the position is valid
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
         }
     }
 
-    public MyAdapter (ArrayList<Items> listItems){//Get the information from the list to the adapter
-        mListItems=listItems;
+    public MyAdapter (List<Movie> m, Context c){//Get the information from the list to the adapter
+        movies=m;
+        context=c;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {//Pass layout of our card to the adapter
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.items,parent,false);
-        MyViewHolder mvh = new MyViewHolder(v);
+        MyViewHolder mvh = new MyViewHolder(v, mListener);
 
         return mvh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {//Assign values to the views
-        Items currentItem = mListItems.get(position);//get item at a specific position
+        Movie currentMovie = movies.get(position);//get item at a specific position
+        String image_url = IMAGE_URL_BASE_PATH + movies.get(position).getPoster_path();
 
         /*Pass information to our views*/
-        holder.mImageView.setImageResource(currentItem.getImage());
-        holder.mTitle.setText(currentItem.getTitle());
-        holder.mDescription.setText(currentItem.getDescription());
+        Picasso.with(context)
+                .load(image_url)
+                .placeholder(android.R.drawable.sym_def_app_icon)
+                .error(android.R.drawable.sym_def_app_icon)
+                .into(holder.mImageMovie);
+
+        holder.mTitle.setText(currentMovie.getTitle());
+        holder.mDescription.setText(currentMovie.getOverview());
+        holder.mDate.setText(currentMovie.getRelease_date());
+        holder.mRatings.setText(Double.toString(currentMovie.getVote_average()));
 
     }
 
     @Override
     public int getItemCount() {//Number of items in our list
-        return mListItems.size();
+        return movies.size();
     }
 }
