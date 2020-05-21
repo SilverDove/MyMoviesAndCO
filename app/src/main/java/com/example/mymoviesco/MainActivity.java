@@ -3,6 +3,10 @@ package com.example.mymoviesco;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.google.gson.Gson;
@@ -16,18 +20,35 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
-    private RecyclerView.Adapter mAdapter;//bridge between our data and our recycler view
+    private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
 
     static final String BASE_URL = "https://api.themoviedb.org/3/";
     private final static String API_KEY = "7b570a518d203152ccc9be5b1e0d0388";
+
+    private static AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        makeAPICall();
+        db = AppDatabase.getInstance(this);
+
+        if(isNetworkAvailable()){
+            makeAPICall();
+            System.out.println("INTERNET");
+        }else{
+            //CHANGE DISPLAY TO SAY THAT THERE IS NO INTERNET CONNECTION
+            System.out.println("NO INTERNET");
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void showList(List<Movie> movieList){
@@ -39,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemListener(new MyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                //Give details in another page
+
+            }
+        });
     }
 
     private void makeAPICall(){
@@ -63,20 +92,13 @@ public class MainActivity extends AppCompatActivity {
                     List<Movie> movies = response.body().getMovieList();
                     showList(movies);
                 }else {
-                    if (response.body() == null){
-                        Toast.makeText(getApplicationContext(), "response.body() is null", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "Error inside onResponse", Toast.LENGTH_SHORT).show();
-                    }
-
-                    //showError();
+                    showError();
                 }
             }
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
                     showError();
-                    System.out.println("ERROR IS : "+t);
             }
         });
     }
@@ -84,4 +106,5 @@ public class MainActivity extends AppCompatActivity {
     private void showError(){
         Toast.makeText(this, "API Error", Toast.LENGTH_SHORT).show();
     }
+
 }

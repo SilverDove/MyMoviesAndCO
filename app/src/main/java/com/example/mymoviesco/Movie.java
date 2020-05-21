@@ -1,41 +1,82 @@
 package com.example.mymoviesco;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity (tableName = "Movie")
 public class Movie {
-    @SerializedName("popularity")
-    private double popularity;
-    @SerializedName("vote_count")
-    private int vote_count;
-    @SerializedName("video")
-    private boolean video;
-    @SerializedName("poster_path")
-    private String poster_path;
+    @PrimaryKey
     @SerializedName("id")
     private int id;
+
+    @ColumnInfo(name = "popularity")
+    @SerializedName("popularity")
+    private double popularity;
+
+    @ColumnInfo(name = "vote_count")
+    @SerializedName("vote_count")
+    private int vote_count;
+
+    @ColumnInfo(name = "video")
+    @SerializedName("video")
+    private boolean video;
+
+    @ColumnInfo(name = "poster_path")
+    @SerializedName("poster_path")
+    private String poster_path;
+
+    @ColumnInfo(name = "adult")
     @SerializedName("adult")
     private boolean adult;
+
+    @ColumnInfo(name = "backdrop_path")
     @SerializedName("backdrop_path")
     private String backdrop_path;
+
+    @ColumnInfo(name = "original_language")
     @SerializedName("original_language")
     private String original_language;
+
+    @ColumnInfo(name = "original_title")
     @SerializedName("original_title")
     private String original_title;
+
+    /*@ColumnInfo(name = "genre_ids")
     @SerializedName("genre_ids")
-    private List<Integer> genre_ids= new ArrayList<Integer>();
+    private List<Integer> genre_ids= new ArrayList<Integer>();*/
+
+    @ColumnInfo(name = "title")
     @SerializedName("title")
     private String title;
+
+    @ColumnInfo(name = "vote_average")
     @SerializedName("vote_average")
     private double vote_average;
+
+    @ColumnInfo(name = "overview")
     @SerializedName("overview")
     private String overview;
+
+    @ColumnInfo(name = "realease_date")
     @SerializedName("release_date")
     private String release_date;
 
-    public Movie(double popularity, int vote_count, boolean video, String poster_path, int id, boolean adult, String backdrop_path, String original_language, String original_title, List<Integer> genre_ids, String title, double vote_average, String overview, String release_date) {
+    @ColumnInfo(name = "watchlist")
+    private boolean watchlist;
+
+    @ColumnInfo(name = "watched")
+    private boolean watched;
+
+    @ColumnInfo(name = "unwatched")
+    private boolean unwatched;
+
+    public Movie(double popularity, int vote_count, boolean video, String poster_path, int id, boolean adult, String backdrop_path, String original_language, String original_title, /*List<Integer> genre_ids,*/ String title, double vote_average, String overview, String release_date) {
         this.popularity = popularity;
         this.vote_count = vote_count;
         this.video = video;
@@ -45,11 +86,38 @@ public class Movie {
         this.backdrop_path = backdrop_path;
         this.original_language = original_language;
         this.original_title = original_title;
-        this.genre_ids = genre_ids;
+        //this.genre_ids = genre_ids;
         this.title = title;
         this.vote_average = vote_average;
         this.overview = overview;
         this.release_date = release_date;
+        watchlist = false;
+        watched = false;
+        unwatched = false;
+    }
+
+    public void setUnwatched(boolean unwatched) {
+        this.unwatched = unwatched;
+    }
+
+    public void setWatched(boolean watched) {
+        this.watched = watched;
+    }
+
+    public void setWatchlist(boolean watchlist) {
+        this.watchlist = watchlist;
+    }
+
+    public boolean getUnwatched() {
+        return unwatched;
+    }
+
+    public boolean getWatched() {
+        return watched;
+    }
+
+    public boolean getWatchlist() {
+        return watchlist;
     }
 
     public void setPopularity(double popularity) {
@@ -88,9 +156,9 @@ public class Movie {
         this.original_title = original_title;
     }
 
-    public void setGenre_ids(List<Integer> genre_ids) {
+    /*public void setGenre_ids(List<Integer> genre_ids) {
         this.genre_ids = genre_ids;
-    }
+    }*/
 
     public void setTitle(String title) {
         this.title = title;
@@ -144,9 +212,9 @@ public class Movie {
         return original_title;
     }
 
-    public List<Integer> getGenre_ids() {
+    /*public List<Integer> getGenre_ids() {
         return genre_ids;
-    }
+    }*/
 
     public String getTitle() {
         return title;

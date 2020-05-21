@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical"
     android:minHeight="72dp"
     android:orientation="horizontal"
-    android:padding="16dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="4dp">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/movie_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:paddingRight="16dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="150dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="16dp"
             android:text="Title"
-            android:layout_below="@+id/movie_image"
             android:textColor="@android:color/background_dark"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/description"
@@ -40,6 +39,7 @@
             android:layout_below="@+id/title"
             android:maxLines="3"
             android:paddingRight="16dp"
+            android:layout_marginTop="5dp"
             android:text="Description"
             android:textColor="@android:color/darker_gray" />
 
@@ -47,23 +47,18 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="16dp"
-            android:text="Date"
             android:layout_below="@+id/description"
-            android:textColor="@android:color/darker_gray"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginLeft="200dp"
-        android:orientation="horizontal">
+            android:paddingRight="16dp"
+            android:layout_marginTop="5dp"
+            android:text="Date"
+            android:textColor="@android:color/darker_gray" />
 
         <ImageView
             android:id="@+id/rating_image"
             android:layout_width="15dp"
             android:layout_height="15dp"
+            android:layout_below="@+id/date"
+            android:layout_marginTop="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_star" />
 
@@ -72,14 +67,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rating_image"
-            android:layout_marginStart="-7dp"
-            android:layout_marginLeft="8dp"
             android:layout_toEndOf="@+id/rating_image"
             android:text="5.0" />
     </RelativeLayout>
-
-
-
 
 
 </androidx.cardview.widget.CardView>

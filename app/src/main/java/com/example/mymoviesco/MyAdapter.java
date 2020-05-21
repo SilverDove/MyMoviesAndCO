@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,12 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<Movie> movies;
     private Context context;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemListener(OnItemClickListener listener){
+            mListener = listener;
+    }
 
     public static final String IMAGE_URL_BASE_PATH="http://image.tmdb.org/t/p/w342//";
 
@@ -32,7 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public ImageView mImageRating;//contains ImageView of our item
         public TextView mRatings;//contains TextView of our item
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             /*Assign references to our views*/
             mImageMovie = itemView.findViewById(R.id.movie_image);
@@ -42,6 +49,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
             mImageRating = itemView.findViewById(R.id.rating_image);
             mRatings = itemView.findViewById(R.id.rating);
+
+            //When we click on the item
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        int position = getAdapterPosition();//Provide the position of the item
+                        if(position != RecyclerView.NO_POSITION){//Verify that the position is valid
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
         }
     }
@@ -55,7 +75,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {//Pass layout of our card to the adapter
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.items,parent,false);
-        MyViewHolder mvh = new MyViewHolder(v);
+        MyViewHolder mvh = new MyViewHolder(v, mListener);
 
         return mvh;
     }
