@@ -22,7 +22,6 @@ public class DetailsMovie extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_movie);
 
-
         Intent intent = getIntent();
         Movie movie = intent.getParcelableExtra(EXTRA_MOVIE);
 
@@ -36,7 +35,7 @@ public class DetailsMovie extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbar_details,menu);
+        inflater.inflate(R.menu.details_menu,menu);
         return true;
     }
 
@@ -44,7 +43,7 @@ public class DetailsMovie extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.watchlist:
-                Toast.makeText(this, "Click on Icon", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Click on Icon Watchlist", Toast.LENGTH_SHORT).show();
                 //add movie into the database + change icon
                 //remove from the database if already added + change icon
                 return true;

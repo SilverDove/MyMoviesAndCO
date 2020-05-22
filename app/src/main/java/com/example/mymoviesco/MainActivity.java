@@ -1,5 +1,7 @@
 package com.example.mymoviesco;
 
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,17 +11,25 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity{
+
     public static final String EXTRA_MOVIE = "com.example.mymoviesco.EXTRA_MOVIE";
 
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
@@ -31,10 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static AppDatabase db;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().setTitle("Home");
 
         db = AppDatabase.getInstance(this);
 
@@ -44,6 +57,27 @@ public class MainActivity extends AppCompatActivity {
         }else{
             //CHANGE DISPLAY TO SAY THAT THERE IS NO INTERNET CONNECTION
             System.out.println("NO INTERNET");
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_myList:
+                Toast.makeText(this, "Click on Icon List", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), Watchlist.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -78,13 +112,13 @@ public class MainActivity extends AppCompatActivity {
     private void makeAPICall(){
 
         Gson gson = new GsonBuilder()
-                    .setLenient()
-                    .create();
+                .setLenient()
+                .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build();
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
 
         MovieApiService movieApiService = retrofit.create(MovieApiService.class);
 
@@ -103,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MovieResponse> call, Throwable t) {
-                    showError();
+                showError();
             }
         });
     }
