@@ -1,36 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsMovie"
-    android:background="#9C009688">
+    tools:context=".DetailsMovie">
 
-    <ImageView
-        android:id="@+id/item_poster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
 
-    <TextView
-        android:id="@+id/item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/item_poster"
-        android:layout_toEndOf="@+id/item_poster"
-        android:text="Title"
-        android:textSize="35dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/item_originalTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/item_title"
-        android:layout_toLeftOf="@+id/item_poster"
-        android:layout_toEndOf="@+id/item_poster"
-        android:text="Original Title"
-        android:textSize="20dp"
-        android:textStyle="italic" />
+            <ImageView
+                android:id="@+id/item_backdrop"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
+
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_backdrop"
+                android:text="Title"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/item_originalTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_title"
+                android:text="Original Title"
+                android:textSize="15dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_originalTitle"
+                android:text="Release Date:"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/item_release_date"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text"
+                android:text="date"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_release_date"
+                android:text="Overview:"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/item_overview"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text2"
+                android:text="Bla bla"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/text3"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_overview"
+                android:text="Popularity:"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/item_popularity"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text3"
+                android:text="Bla bla"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/text4"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_popularity"
+                android:text="Vote Average:"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/item_vote_average"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text4"
+                android:text="Bla bla"
+                android:textSize="18dp"/>
+
+            <TextView
+                android:id="@+id/text5"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_vote_average"
+                android:text="Vote Count:"
+                android:textSize="18dp"/>
+            <TextView
+                android:id="@+id/item_vote_count"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text5"
+                android:text="Bla bla"
+                android:textSize="18dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 
 

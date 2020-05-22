@@ -41,7 +41,7 @@
             android:paddingRight="16dp"
             android:layout_marginTop="5dp"
             android:text="Description"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"/>
 
         <TextView
             android:id="@+id/date"
