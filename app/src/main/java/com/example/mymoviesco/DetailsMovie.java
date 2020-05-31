@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import static com.example.mymoviesco.MainActivity.EXTRA_MOVIE;
+import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
 import static com.example.mymoviesco.MyAdapter.IMAGE_URL_BASE_PATH;
 
 public class DetailsMovie extends AppCompatActivity {
