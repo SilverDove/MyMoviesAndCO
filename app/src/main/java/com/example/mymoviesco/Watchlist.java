@@ -2,6 +2,8 @@ package com.example.mymoviesco;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +12,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.List;
+
+import static com.example.mymoviesco.MainActivity.EXTRA_MOVIE;
+
 public class Watchlist extends AppCompatActivity {
+
+    private static AppDatabase db;
+    private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
+    private MyAdapter mAdapter;//bridge between our data and our recycler view
+    private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +30,31 @@ public class Watchlist extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Watchlist");
 
+        db = AppDatabase.getInstance(this);
+        List<Movie> movieList = db.movieDao().getMovies();
+        showList(movieList);
+
+    }
+
+    public void showList(final List<Movie> movieList){
+        /*Initialization*/
+        mRecyclerView = findViewById(R.id.recyclerView);
+        //mRecyclerView.setHasFixedSize(true);//Recycler view doesn't change in size (Increase performance)
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new MyAdapter(movieList, this);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemListener(new MyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {//Open new Activity to display details of the movie
+                //Give movie selected in another page
+                Intent intent = new Intent(getApplicationContext(), DetailsMovie.class);
+                intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

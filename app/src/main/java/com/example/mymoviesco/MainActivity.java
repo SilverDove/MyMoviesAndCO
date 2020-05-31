@@ -39,17 +39,12 @@ public class MainActivity extends AppCompatActivity{
     static final String BASE_URL = "https://api.themoviedb.org/3/";
     private final static String API_KEY = "7b570a518d203152ccc9be5b1e0d0388";
 
-    private static AppDatabase db;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setTitle("Home");
-
-        db = AppDatabase.getInstance(this);
 
         if(isNetworkAvailable()){
             makeAPICall();
