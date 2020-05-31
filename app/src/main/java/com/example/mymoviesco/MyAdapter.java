@@ -27,7 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             mListener = listener;
     }
 
-    public static final String IMAGE_URL_BASE_PATH="http://image.tmdb.org/t/p/w342//";
+    public static final String IMAGE_URL_BASE_PATH="https://image.tmdb.org/t/p/w342//";
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         /*Elements for one item*/

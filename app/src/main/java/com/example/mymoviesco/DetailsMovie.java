@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,10 +13,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import static com.example.mymoviesco.MainActivity.EXTRA_MOVIE;
 import static com.example.mymoviesco.MyAdapter.IMAGE_URL_BASE_PATH;
 
 public class DetailsMovie extends AppCompatActivity {
+
+    private AppDatabase db;
+    private Movie movie;
+    private boolean watchlist;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,19 +31,29 @@ public class DetailsMovie extends AppCompatActivity {
         setContentView(R.layout.activity_details_movie);
 
         Intent intent = getIntent();
-        Movie movie = intent.getParcelableExtra(EXTRA_MOVIE);
+        movie = intent.getParcelableExtra(EXTRA_MOVIE);
 
         getSupportActionBar().setTitle(movie.getTitle());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//display button to go back to previous page
 
-        BuildDetailsPage(movie);//Display page with all the information
+        db = AppDatabase.getInstance(this);
+
+        watchlist = checkMovieAlreadyInWatchlist();//Check if the movie is already in the watchlist
+        System.out.println("Watchlist is "+watchlist);
+        BuildDetailsPage();//Display page with all the information
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.details_menu,menu);
+        if(watchlist == true) {//If the movie is already in the watchlist
+            menu.findItem(R.id.watchlist).setIcon(R.drawable.ic_playlist_add_check);
+        }else{
+            menu.findItem(R.id.watchlist).setIcon(R.drawable.ic_playlist_add);
+        }
         return true;
     }
 
@@ -43,16 +61,32 @@ public class DetailsMovie extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.watchlist:
-                Toast.makeText(this, "Click on Icon Watchlist", Toast.LENGTH_SHORT).show();
-                //add movie into the database + change icon
-                //remove from the database if already added + change icon
+                if(watchlist==false){//If the movie is not in the watchlist
+                    db.movieDao().insertMovie(movie);
+                    item.setIcon(R.drawable.ic_playlist_add_check);
+                }else{//Otherwise
+                    db.movieDao().deleteMovie(movie);
+                    item.setIcon(R.drawable.ic_playlist_add);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void BuildDetailsPage(Movie movie){
+    private boolean checkMovieAlreadyInWatchlist(){//Check if the current movie is already in the watchlist
+        List<Movie> movieList = db.movieDao().getMovies();
+
+        for (int i=0; i<movieList.size(); i++){
+            if(movieList.get(i).getId() == movie.getId()){//The movie is already in the watchlist
+                return true;
+            }
+        }
+        return false;//The movie is not in the watchlist
+    }
+
+    private void BuildDetailsPage(){
+        //Display movie information
         String title = movie.getTitle();
         String originalTitle = movie.getOriginal_title();
         String overview = movie.getOverview();
