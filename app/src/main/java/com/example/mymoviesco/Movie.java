@@ -9,9 +9,6 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity (tableName = "Movie")
 public class Movie implements Parcelable {
     @PrimaryKey
@@ -70,14 +67,9 @@ public class Movie implements Parcelable {
     @SerializedName("release_date")
     private String release_date;
 
-    @ColumnInfo(name = "watchlist")
-    private boolean watchlist;
 
     @ColumnInfo(name = "watched")
     private boolean watched;
-
-    @ColumnInfo(name = "unwatched")
-    private boolean unwatched;
 
     public Movie(double popularity, int vote_count, boolean video, String poster_path, int id, boolean adult, String backdrop_path, String original_language, String original_title, /*List<Integer> genre_ids,*/ String title, double vote_average, String overview, String release_date) {
         this.popularity = popularity;
@@ -94,9 +86,7 @@ public class Movie implements Parcelable {
         this.vote_average = vote_average;
         this.overview = overview;
         this.release_date = release_date;
-        watchlist = false;
         watched = false;
-        unwatched = false;
     }
 
     protected Movie(Parcel in) {
@@ -113,9 +103,7 @@ public class Movie implements Parcelable {
         vote_average = in.readDouble();
         overview = in.readString();
         release_date = in.readString();
-        watchlist = in.readByte() != 0;
         watched = in.readByte() != 0;
-        unwatched = in.readByte() != 0;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -150,33 +138,15 @@ public class Movie implements Parcelable {
         parcel.writeDouble(vote_average);
         parcel.writeString(overview);
         parcel.writeString(release_date);
-        parcel.writeByte((byte) (watchlist ? 1 : 0));
         parcel.writeByte((byte) (watched ? 1 : 0));
-        parcel.writeByte((byte) (unwatched ? 1 : 0));
-    }
-
-    public void setUnwatched(boolean unwatched) {
-        this.unwatched = unwatched;
     }
 
     public void setWatched(boolean watched) {
         this.watched = watched;
     }
 
-    public void setWatchlist(boolean watchlist) {
-        this.watchlist = watchlist;
-    }
-
-    public boolean getUnwatched() {
-        return unwatched;
-    }
-
     public boolean getWatched() {
         return watched;
-    }
-
-    public boolean getWatchlist() {
-        return watchlist;
     }
 
     public void setPopularity(double popularity) {
