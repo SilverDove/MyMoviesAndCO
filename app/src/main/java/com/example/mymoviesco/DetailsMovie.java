@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
-import static com.example.mymoviesco.MainActivity.EXTRA_MOVIE;
+import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
 import static com.example.mymoviesco.MyAdapter.IMAGE_URL_BASE_PATH;
 
 public class DetailsMovie extends AppCompatActivity {
@@ -24,6 +27,7 @@ public class DetailsMovie extends AppCompatActivity {
     private Movie movie;
     private boolean watchlist;
     private Menu menu;
+    private Switch simpleSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +40,29 @@ public class DetailsMovie extends AppCompatActivity {
         getSupportActionBar().setTitle(movie.getTitle());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//display button to go back to previous page
 
+        simpleSwitch = (Switch) findViewById(R.id.simpleSwitch);
         db = AppDatabase.getInstance(this);
-
         watchlist = checkMovieAlreadyInWatchlist();//Check if the movie is already in the watchlist
-        System.out.println("Watchlist is "+watchlist);
+
+        SwitchActionListener();
         BuildDetailsPage();//Display page with all the information
 
+    }
+
+    public void SwitchActionListener(){
+        simpleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                //TODO: check when button is clicked
+                if(simpleSwitch.isChecked()){//If the switch is 'On'
+                    simpleSwitch.setText("Watched");
+                    db.movieDao().updateMovieWatched(true,movie.getId());
+                }else{
+                    simpleSwitch.setText("Unwatched");
+                    db.movieDao().updateMovieWatched(false,movie.getId());
+                }
+            }
+        });
     }
 
     @Override
@@ -59,14 +80,19 @@ public class DetailsMovie extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //TODO: check button clicked
         switch (item.getItemId()){
             case R.id.watchlist:
                 if(watchlist==false){//If the movie is not in the watchlist
                     db.movieDao().insertMovie(movie);
                     item.setIcon(R.drawable.ic_playlist_add_check);
+                    simpleSwitch.setVisibility(View.VISIBLE);
+                    watchlist=true;
                 }else{//Otherwise
                     db.movieDao().deleteMovie(movie);
                     item.setIcon(R.drawable.ic_playlist_add);
+                    simpleSwitch.setVisibility(View.INVISIBLE);
+                    watchlist=false;
                 }
                 return true;
             default:
@@ -86,6 +112,19 @@ public class DetailsMovie extends AppCompatActivity {
     }
 
     private void BuildDetailsPage(){
+        if(checkMovieAlreadyInWatchlist()){//If the movie is in the watchlist
+            simpleSwitch.setVisibility(View.VISIBLE);
+            if(watchlist == true && movie.getWatched()==true){//If the movie is in the database and watched
+                simpleSwitch.setText("Watched");
+                simpleSwitch.setChecked(true);
+            }else{
+                simpleSwitch.setText("Unwatched");
+                simpleSwitch.setChecked(false);
+            }
+        }else{
+            simpleSwitch.setVisibility(View.INVISIBLE);
+        }
+
         //Display movie information
         String title = movie.getTitle();
         String originalTitle = movie.getOriginal_title();

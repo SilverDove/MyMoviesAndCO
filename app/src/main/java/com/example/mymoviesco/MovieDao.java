@@ -17,6 +17,9 @@ public interface MovieDao {
     @Query("SELECT * FROM Movie WHERE watched=(:watched)")
     List<Movie> getWatched(boolean watched);
 
+    @Query("UPDATE Movie SET watched =(:watched) where id=(:id)")
+    void updateMovieWatched(boolean watched, int id);
+
     @Insert
     void insertMovie(Movie m);
 
