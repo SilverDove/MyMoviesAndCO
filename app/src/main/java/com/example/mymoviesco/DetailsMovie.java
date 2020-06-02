@@ -87,10 +87,12 @@ public class DetailsMovie extends AppCompatActivity {
                     db.movieDao().insertMovie(movie);
                     item.setIcon(R.drawable.ic_playlist_add_check);
                     simpleSwitch.setVisibility(View.VISIBLE);
+                    watchlist=true;
                 }else{//Otherwise
                     db.movieDao().deleteMovie(movie);
                     item.setIcon(R.drawable.ic_playlist_add);
                     simpleSwitch.setVisibility(View.INVISIBLE);
+                    watchlist=false;
                 }
                 return true;
             default:
