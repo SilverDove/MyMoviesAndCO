@@ -23,6 +23,7 @@ import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
 public class WatchlistFragment extends Fragment {
 
     private static AppDatabase db;
+    private Menu m;
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
@@ -31,13 +32,50 @@ public class WatchlistFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_watchlist, container, false);
-        getActivity().setTitle("Home");
+        getActivity().setTitle("Watchlist");
+
+        setHasOptionsMenu(true);
 
         db = AppDatabase.getInstance(getContext());
         List<Movie> movieList = db.movieDao().getMovies();
         showList(movieList, v);
 
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        m=menu;
+        inflater.inflate(R.menu.watchlist_menu, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        List<Movie> movieList;
+        MenuItem i = m.findItem(R.id.movieStatus);
+        switch (item.getItemId()){
+            case R.id.allMovies:
+                movieList = db.movieDao().getMovies();
+                showList(movieList, getView());
+                i.setTitle("All");
+                break;
+
+            case R.id.movieWatched:
+                movieList = db.movieDao().getWatched(true);
+                showList(movieList, getView());
+                i.setTitle("Watched");
+                break;
+
+            case R.id.movieUnwatched:
+                movieList = db.movieDao().getWatched(false);
+                showList(movieList, getView());
+                i.setTitle("Unwatched");
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void showList(final List<Movie> movieList, View v){
