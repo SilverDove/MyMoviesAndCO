@@ -21,7 +21,7 @@ import java.util.List;
 import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
 import static com.example.mymoviesco.MyAdapter.IMAGE_URL_BASE_PATH;
 
-public class DetailsMovie extends AppCompatActivity {
+public class DetailsMovieActivity extends AppCompatActivity {
 
     private AppDatabase db;
     private Movie movie;

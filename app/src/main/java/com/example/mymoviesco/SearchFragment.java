@@ -99,7 +99,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(int position) {//Open new Activity to display details of the movie
                 //Give movie selected in another page
-                Intent intent = new Intent(getContext(), DetailsMovie.class);
+                Intent intent = new Intent(getContext(), DetailsMovieActivity.class);
                 intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
                 startActivity(intent);
             }

@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -91,7 +90,7 @@ public class WatchlistFragment extends Fragment {
             @Override
             public void onItemClick(int position) {//Open new Activity to display details of the movie
                 //Give movie selected in another page
-                Intent intent = new Intent(getContext(), DetailsMovie.class);
+                Intent intent = new Intent(getContext(), DetailsMovieActivity.class);
                 intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
                 startActivity(intent);
             }

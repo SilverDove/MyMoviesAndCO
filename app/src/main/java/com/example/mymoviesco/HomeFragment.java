@@ -6,9 +6,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -78,7 +75,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(int position) {//Open new Activity to display details of the movie
                 //Give movie selected in another page
-                Intent intent = new Intent(getContext(), DetailsMovie.class);
+                Intent intent = new Intent(getContext(), DetailsMovieActivity.class);
                 intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
                 startActivity(intent);
             }
