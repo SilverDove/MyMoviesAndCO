@@ -60,5 +60,7 @@ dependencies {
     // Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
 
+    implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
+
 
 }
