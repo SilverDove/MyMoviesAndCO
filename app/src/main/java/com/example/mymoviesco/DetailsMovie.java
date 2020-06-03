@@ -95,6 +95,9 @@ public class DetailsMovie extends AppCompatActivity {
                     watchlist=false;
                 }
                 return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

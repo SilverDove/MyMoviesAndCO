@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity{
                     Fragment selectedFragment = null;
 
                     switch (item.getItemId()){
+                        case R.id.nav_search:
+                            selectedFragment = new SearchFragment();
+                            break;
+
                         case R.id.nav_home:
                             selectedFragment = new HomeFragment();
                             break;

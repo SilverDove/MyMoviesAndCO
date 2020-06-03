@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,31 +31,51 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeFragment extends Fragment {
+import static com.example.mymoviesco.HomeFragment.API_KEY;
+import static com.example.mymoviesco.HomeFragment.BASE_URL;
+import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
 
-    public static final String EXTRA_MOVIE = "com.example.mymoviesco.EXTRA_MOVIE";
+public class SearchFragment extends Fragment {
 
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
 
-    static final String BASE_URL = "https://api.themoviedb.org/3/";
-    final static String API_KEY = "7b570a518d203152ccc9be5b1e0d0388";
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_watchlist, container, false);
-        getActivity().setTitle("Home : Top movies");
+        View v = inflater.inflate(R.layout.fragment_search, container, false);
+        getActivity().setTitle("Search");
 
         if(isNetworkAvailable()){
-            makeAPICall(v);
-            System.out.println("INTERNET");
-        }else{
-            //CHANGE DISPLAY TO SAY THAT THERE IS NO INTERNET CONNECTION
-            System.out.println("NO INTERNET");
+            setHasOptionsMenu(true);
         }
+
         return v;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                makeAPICall(getView(), s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                makeAPICall(getView(), s);
+                return false;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     private boolean isNetworkAvailable() {
@@ -85,7 +106,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void makeAPICall(final View v){
+    private void makeAPICall(final View v, String movieSearch){
 
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -98,7 +119,8 @@ public class HomeFragment extends Fragment {
 
         MovieApiService movieApiService = retrofit.create(MovieApiService.class);
 
-        Call<MovieResponse> call = movieApiService.getPopularMovies(API_KEY);
+        //TODO: send movie
+        Call<MovieResponse> call = movieApiService.getSearchMovies(API_KEY, movieSearch);
 
         call.enqueue(new Callback<MovieResponse>() {
             @Override
