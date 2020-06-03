@@ -12,8 +12,7 @@
         <activity android:name=".Home"></activity>
         <activity android:name=".Watchlist" />
         <activity
-            android:name=".DetailsMovie"
-            android:parentActivityName=".MainActivity" />
+            android:name=".DetailsMovie"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
