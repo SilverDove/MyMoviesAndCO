@@ -28,4 +28,11 @@ public interface MovieDao {
 
     @Query("DELETE FROM Movie")
     void deleteTableMovie();
+
+    @Query("SELECT COUNT(*) FROM Movie")
+    int getNumberItems();
+
+    @Query("DELETE FROM Movie WHERE watched=(:watched)")
+    void deleteMovieWatched(boolean watched);
+
 }

@@ -80,19 +80,22 @@ public class DetailsMovieActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //TODO: check button clicked
         switch (item.getItemId()){
             case R.id.watchlist:
                 if(watchlist==false){//If the movie is not in the watchlist
+                    //add the movie into the database and change the icon
                     db.movieDao().insertMovie(movie);
                     item.setIcon(R.drawable.ic_playlist_add_check);
                     simpleSwitch.setVisibility(View.VISIBLE);
                     watchlist=true;
+                    Toast.makeText(this, movie.getTitle()+" added in your watchlist", Toast.LENGTH_SHORT).show();
                 }else{//Otherwise
+                    //remove the movie into the database and change the icon
                     db.movieDao().deleteMovie(movie);
                     item.setIcon(R.drawable.ic_playlist_add);
                     simpleSwitch.setVisibility(View.INVISIBLE);
                     watchlist=false;
+                    Toast.makeText(this, movie.getTitle()+" removed from your watchlist", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case android.R.id.home:

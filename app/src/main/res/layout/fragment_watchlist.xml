@@ -4,11 +4,52 @@
     android:layout_height="match_parent"
     android:background="#ffe2bc">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <Button
+        android:id="@+id/deleteAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFC107"
+        android:text="Delete All"
+        android:layout_margin="15dp"
+        android:textColor="#F44336" />
+    <Button
+        android:id="@+id/deleteWatched"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFC107"
+        android:text="Delete Watched"
+        android:layout_toRightOf="@id/deleteAll"
+        android:layout_margin="15dp"
+        android:textColor="#F44336" />
+    <Button
+        android:id="@+id/deleteUnwatched"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFC107"
+        android:text="Delete Unwatched"
+        android:layout_toRightOf="@id/deleteWatched"
+        android:layout_margin="15dp"
+        android:textColor="#F44336" />
+
+    <TextView
+        android:id="@+id/emptyDatabase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="There is nothing in your watchlist"/>
+    <FrameLayout
+        android:id="@+id/watchlistLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="4dp"
-        android:scrollbars="vertical" />
+        android:layout_below="@+id/deleteAll">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:scrollbars="vertical" />
+    </FrameLayout>
 
 </RelativeLayout>

@@ -8,6 +8,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +29,11 @@ public class WatchlistFragment extends Fragment {
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
+    private Button deleteAll;
+    private Button deleteWatched;
+    private Button deleteUnwatched;
+    private TextView emptyDatabase;
+    private List<Movie> movieList;
 
     @Nullable
     @Override
@@ -35,9 +43,22 @@ public class WatchlistFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+        deleteAll = v.findViewById(R.id.deleteAll);
+        onButton_AllDeleteClickListener(deleteAll);
+        deleteWatched = v.findViewById(R.id.deleteWatched);
+        onButton_AllWatchedClickListener(deleteWatched);
+        deleteUnwatched = v.findViewById(R.id.deleteUnwatched);
+        onButton_AllUnwatchedClickListener(deleteUnwatched);
+
+        deleteAll.setVisibility(View.VISIBLE);
+        deleteWatched.setVisibility(View.INVISIBLE);
+        deleteUnwatched.setVisibility(View.INVISIBLE);
+
+        emptyDatabase = v.findViewById(R.id.emptyDatabase);
+
         db = AppDatabase.getInstance(getContext());
-        List<Movie> movieList = db.movieDao().getMovies();
-        showList(movieList, v);
+        movieList = db.movieDao().getMovies();
+        showList(v);
 
         return v;
     }
@@ -46,30 +67,64 @@ public class WatchlistFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         m=menu;
         inflater.inflate(R.menu.watchlist_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                mAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
+
         super.onCreateOptionsMenu(menu,inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        List<Movie> movieList;
         MenuItem i = m.findItem(R.id.movieStatus);
         switch (item.getItemId()){
             case R.id.allMovies:
+                movieList.clear();
                 movieList = db.movieDao().getMovies();
-                showList(movieList, getView());
+                showList(getView());
                 i.setTitle("All");
+
+                deleteAll.setVisibility(View.VISIBLE);
+                deleteWatched.setVisibility(View.INVISIBLE);
+                deleteUnwatched.setVisibility(View.INVISIBLE);
+
                 break;
 
             case R.id.movieWatched:
+                movieList.clear();
                 movieList = db.movieDao().getWatched(true);
-                showList(movieList, getView());
+                showList(getView());
                 i.setTitle("Watched");
+
+                deleteAll.setVisibility(View.INVISIBLE);
+                deleteWatched.setVisibility(View.VISIBLE);
+                deleteUnwatched.setVisibility(View.INVISIBLE);
+
                 break;
 
             case R.id.movieUnwatched:
+                movieList.clear();
                 movieList = db.movieDao().getWatched(false);
-                showList(movieList, getView());
+                showList(getView());
                 i.setTitle("Unwatched");
+
+                deleteAll.setVisibility(View.INVISIBLE);
+                deleteWatched.setVisibility(View.INVISIBLE);
+                deleteUnwatched.setVisibility(View.VISIBLE);
+
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -77,22 +132,77 @@ public class WatchlistFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showList(final List<Movie> movieList, View v){
+    public void showList(View v){
         /*Initialization*/
-        mRecyclerView = v.findViewById(R.id.recyclerView);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new MyAdapter(movieList, getContext());
+        if(movieList.size()==0){
+            emptyDatabase.setVisibility(View.VISIBLE);
+            deleteAll.setVisibility(View.INVISIBLE);
+        }else{
+            emptyDatabase.setVisibility(View.INVISIBLE);
+            mRecyclerView = v.findViewById(R.id.recyclerView);
+            mLayoutManager = new LinearLayoutManager(getContext());
+            mAdapter = new MyAdapter(movieList, getContext());
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemListener(new MyAdapter.OnItemClickListener() {
+            mAdapter.setOnItemListener(new MyAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {//Open new Activity to display details of the movie
+                    //Give movie selected in another page
+                    Intent intent = new Intent(getContext(), DetailsMovieActivity.class);
+                    intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    public void onButton_AllDeleteClickListener(Button all_delete){
+        all_delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(int position) {//Open new Activity to display details of the movie
-                //Give movie selected in another page
-                Intent intent = new Intent(getContext(), DetailsMovieActivity.class);
-                intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
-                startActivity(intent);
+            public void onClick(View v) {
+                int size = db.movieDao().getNumberItems();
+                for(int i=0; i<size; i++){
+                    mAdapter.notifyItemRemoved(0);
+                }
+                movieList.clear();
+                db.movieDao().deleteTableMovie();
+                deleteAll.setVisibility(View.INVISIBLE);
+
+            }
+        });
+    }
+
+    public void onButton_AllWatchedClickListener(Button all_delete){
+        all_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size = movieList.size();
+                for(int i=0; i<size; i++){
+                    mAdapter.notifyItemRemoved(0);
+                }
+                movieList.clear();
+                db.movieDao().deleteMovieWatched(true);
+                deleteWatched.setVisibility(View.INVISIBLE);
+
+            }
+        });
+    }
+
+    public void onButton_AllUnwatchedClickListener(Button all_delete){
+        all_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size = db.movieDao().getNumberItems();
+                for(int i=0; i<size; i++){
+                    mAdapter.notifyItemRemoved(0);
+                }
+                movieList.clear();
+                db.movieDao().deleteTableMovie();
+                db.movieDao().deleteMovieWatched(false);
+                deleteUnwatched.setVisibility(View.INVISIBLE);
+
             }
         });
     }

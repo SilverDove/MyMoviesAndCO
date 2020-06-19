@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class SearchFragment extends Fragment {
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
+    private TextView SearchStatus;
 
     @Nullable
     @Override
@@ -47,8 +49,11 @@ public class SearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
         getActivity().setTitle("Search");
 
+        SearchStatus = v.findViewById(R.id.SearchStatus);
+        SearchStatus.setVisibility(View.VISIBLE);
         if(isNetworkAvailable()){
             setHasOptionsMenu(true);
+            SearchStatus.setText("There is no internet connection :(");
         }
 
         return v;
@@ -64,12 +69,14 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                SearchStatus.setVisibility(View.INVISIBLE);
                 makeAPICall(getView(), s);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                SearchStatus.setVisibility(View.INVISIBLE);
                 makeAPICall(getView(), s);
                 return false;
             }

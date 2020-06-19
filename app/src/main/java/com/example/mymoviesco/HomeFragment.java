@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,22 +36,26 @@ public class HomeFragment extends Fragment {
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
 
+    private TextView emptyMessage;
+
     static final String BASE_URL = "https://api.themoviedb.org/3/";
     final static String API_KEY = "7b570a518d203152ccc9be5b1e0d0388";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_watchlist, container, false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home : Top movies");
 
-        if(isNetworkAvailable()){
-            makeAPICall(v);
-            System.out.println("INTERNET");
-        }else{
-            //CHANGE DISPLAY TO SAY THAT THERE IS NO INTERNET CONNECTION
-            System.out.println("NO INTERNET");
-        }
+        emptyMessage = v.findViewById(R.id.emptyMessage);
+            if(isNetworkAvailable()){
+                makeAPICall(v);
+                System.out.println("INTERNET");
+            }else{
+                emptyMessage.setVisibility(View.VISIBLE);
+                System.out.println("NO INTERNET");
+            }
+
         return v;
     }
 
@@ -102,7 +107,12 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 if (response.isSuccessful() && response.body() != null){
                     List<Movie> movies = response.body().getMovieList();
-                    showList(movies, v);
+                    if (movies.size()>0){
+                        emptyMessage.setVisibility(View.INVISIBLE);
+                        showList(movies, v);
+                    }else{
+                        emptyMessage.setVisibility(View.VISIBLE);
+                    }
                 }else {
                     showError();
                 }
