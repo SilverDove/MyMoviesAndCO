@@ -260,4 +260,6 @@ public class Movie implements Parcelable {
     public String getRelease_date() {
         return release_date;
     }
+
+
 }

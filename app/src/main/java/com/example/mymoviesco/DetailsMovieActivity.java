@@ -3,8 +3,9 @@ package com.example.mymoviesco;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,8 +17,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
 
+
+import java.util.List;
 import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
 import static com.example.mymoviesco.MyAdapter.IMAGE_URL_BASE_PATH;
 
@@ -37,7 +39,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
         Intent intent = getIntent();
         movie = intent.getParcelableExtra(EXTRA_MOVIE);
 
-        getSupportActionBar().setTitle(movie.getTitle());
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//display button to go back to previous page
 
         simpleSwitch = (Switch) findViewById(R.id.simpleSwitch);
@@ -53,7 +55,6 @@ public class DetailsMovieActivity extends AppCompatActivity {
         simpleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //TODO: check when button is clicked
                 if(simpleSwitch.isChecked()){//If the switch is 'On'
                     simpleSwitch.setText("Watched");
                     db.movieDao().updateMovieWatched(true,movie.getId());

@@ -24,6 +24,11 @@ import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
 
 public class WatchlistFragment extends Fragment {
 
+    public static final String MOVIE_ALL = "com.example.mymoviesco.MOVIE_ALL";
+    public static final String MOVIE_WATCHED = "com.example.mymoviesco.MOVIE_WATCHED";
+    public static final String MOVIE_UNWATCHED = "com.example.mymoviesco.MOVIE_UNWATCHED";
+
+    private static String listStatus;
     private static AppDatabase db;
     private Menu m;
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
@@ -43,34 +48,40 @@ public class WatchlistFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+        listStatus = MOVIE_ALL;
+
         deleteAll = v.findViewById(R.id.deleteAll);
         onButton_AllDeleteClickListener(deleteAll);
+        deleteAll.setVisibility(View.VISIBLE);
         deleteWatched = v.findViewById(R.id.deleteWatched);
         onButton_AllWatchedClickListener(deleteWatched);
         deleteUnwatched = v.findViewById(R.id.deleteUnwatched);
         onButton_AllUnwatchedClickListener(deleteUnwatched);
 
-        deleteAll.setVisibility(View.VISIBLE);
-        deleteWatched.setVisibility(View.INVISIBLE);
-        deleteUnwatched.setVisibility(View.INVISIBLE);
-
         emptyDatabase = v.findViewById(R.id.emptyDatabase);
 
         db = AppDatabase.getInstance(getContext());
         movieList = db.movieDao().getMovies();
-        showList(v);
+
+        buildList(v);
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println(listStatus);
+        refreshList();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         m=menu;
         inflater.inflate(R.menu.watchlist_menu, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
 
+        SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -94,36 +105,30 @@ public class WatchlistFragment extends Fragment {
             case R.id.allMovies:
                 movieList.clear();
                 movieList = db.movieDao().getMovies();
-                showList(getView());
                 i.setTitle("All");
+                listStatus = MOVIE_ALL;
 
-                deleteAll.setVisibility(View.VISIBLE);
-                deleteWatched.setVisibility(View.INVISIBLE);
-                deleteUnwatched.setVisibility(View.INVISIBLE);
+                refreshList();
 
                 break;
 
             case R.id.movieWatched:
                 movieList.clear();
                 movieList = db.movieDao().getWatched(true);
-                showList(getView());
                 i.setTitle("Watched");
+                listStatus = MOVIE_WATCHED;
 
-                deleteAll.setVisibility(View.INVISIBLE);
-                deleteWatched.setVisibility(View.VISIBLE);
-                deleteUnwatched.setVisibility(View.INVISIBLE);
+                refreshList();
 
                 break;
 
             case R.id.movieUnwatched:
                 movieList.clear();
                 movieList = db.movieDao().getWatched(false);
-                showList(getView());
                 i.setTitle("Unwatched");
+                listStatus = MOVIE_UNWATCHED;
 
-                deleteAll.setVisibility(View.INVISIBLE);
-                deleteWatched.setVisibility(View.INVISIBLE);
-                deleteUnwatched.setVisibility(View.VISIBLE);
+                refreshList();
 
                 break;
             default:
@@ -132,13 +137,61 @@ public class WatchlistFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showList(View v){
+    public void refreshList(){
+        switch(listStatus){
+            case MOVIE_ALL:
+                deleteAll.setVisibility(View.VISIBLE);
+                deleteWatched.setVisibility(View.INVISIBLE);
+                deleteUnwatched.setVisibility(View.INVISIBLE);
+
+                if(movieList != null){
+                    movieList.clear();
+                }
+                movieList = db.movieDao().getMovies();
+
+                break;
+            case MOVIE_WATCHED:
+                deleteAll.setVisibility(View.INVISIBLE);
+                deleteWatched.setVisibility(View.VISIBLE);
+                deleteUnwatched.setVisibility(View.INVISIBLE);
+
+                if(movieList != null){
+                    movieList.clear();
+                }
+                movieList = db.movieDao().getWatched(true);
+
+                break;
+            case MOVIE_UNWATCHED:
+                deleteAll.setVisibility(View.INVISIBLE);
+                deleteWatched.setVisibility(View.INVISIBLE);
+                deleteUnwatched.setVisibility(View.VISIBLE);
+
+                if(movieList != null){
+                    movieList.clear();
+                }
+                movieList = db.movieDao().getWatched(false);
+
+                break;
+
+            default:
+        }
+
+        buildList(getView());
+
+    }
+
+    public void buildList(View v){
         /*Initialization*/
         if(movieList.size()==0){
             emptyDatabase.setVisibility(View.VISIBLE);
             deleteAll.setVisibility(View.INVISIBLE);
+            deleteWatched.setVisibility(View.INVISIBLE);
+            deleteUnwatched.setVisibility(View.INVISIBLE);
+            mAdapter.notifyDataSetChanged();
         }else{
+            System.out.println("Hello, My list size is "+ movieList.size());
             emptyDatabase.setVisibility(View.INVISIBLE);
+
             mRecyclerView = v.findViewById(R.id.recyclerView);
             mLayoutManager = new LinearLayoutManager(getContext());
             mAdapter = new MyAdapter(movieList, getContext());
@@ -168,7 +221,8 @@ public class WatchlistFragment extends Fragment {
                 }
                 movieList.clear();
                 db.movieDao().deleteTableMovie();
-                deleteAll.setVisibility(View.INVISIBLE);
+                //deleteAll.setVisibility(View.INVISIBLE);
+                refreshList();
 
             }
         });
@@ -184,7 +238,9 @@ public class WatchlistFragment extends Fragment {
                 }
                 movieList.clear();
                 db.movieDao().deleteMovieWatched(true);
-                deleteWatched.setVisibility(View.INVISIBLE);
+                movieList = db.movieDao().getWatched(true);
+                refreshList();
+                //deleteWatched.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -199,9 +255,10 @@ public class WatchlistFragment extends Fragment {
                     mAdapter.notifyItemRemoved(0);
                 }
                 movieList.clear();
-                db.movieDao().deleteTableMovie();
                 db.movieDao().deleteMovieWatched(false);
-                deleteUnwatched.setVisibility(View.INVISIBLE);
+                movieList = db.movieDao().getWatched(false);
+                refreshList();
+                //deleteUnwatched.setVisibility(View.INVISIBLE);
 
             }
         });

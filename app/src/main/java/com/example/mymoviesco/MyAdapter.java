@@ -100,8 +100,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
                 .load(image_url)
                 .placeholder(android.R.drawable.sym_def_app_icon)
                 .error(android.R.drawable.sym_def_app_icon)
-                .resize(500, 700)
-                .centerCrop()
+                .resize(400, 500)
+                .centerInside()
                 .into(holder.mImageMovie);
 
         holder.mTitle.setText(currentMovie.getTitle());

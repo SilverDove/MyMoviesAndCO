@@ -3,142 +3,174 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsMovieActivity"
-    android:background="#ffe2bc">
+    android:background="#ffe2bc"
+    tools:context=".DetailsMovieActivity">
+
+
+    <ImageView
+        android:id="@+id/item_backdrop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_backdrop"
+        android:background="#fe8a71"
+        android:paddingLeft="10dp"
+        android:text="Title"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/item_originalTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_title"
+        android:background="#fe8a71"
+        android:paddingLeft="10dp"
+        android:text="Original Title"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="15dp"
+        android:textStyle="italic" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@id/item_originalTitle">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/item_backdrop"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true" />
-
-            <TextView
-                android:id="@+id/item_title"
+                android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_backdrop"
-                android:text="Title"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+                android:maxHeight="20dp"
+                android:maxWidth="20dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_date"
+                android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/item_originalTitle"
+                android:id="@+id/item_release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_title"
-                android:text="Original Title"
-                android:textSize="15dp"
-                android:textStyle="italic" />
+                android:layout_toRightOf="@+id/text"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="date"
+                android:textSize="18dp" />
 
             <Switch
                 android:id="@+id/simpleSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_originalTitle"
-                android:text="Unwatched"/>
-
-            <TextView
-                android:id="@+id/text"
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/simpleSwitch"
-                android:text="Release Date:"
-                android:textSize="18dp"/>
-            <TextView
-                android:id="@+id/item_release_date"
+                android:layout_toLeftOf="@+id/text"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/text"
-                android:text="date"
-                android:textSize="18dp"/>
+                android:layout_marginRight="15dp"
+                android:text="Unwatched" />
 
             <TextView
                 android:id="@+id/text2"
-                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/item_release_date"
-                android:text="Overview:"
-                android:textSize="18dp"/>
+                android:layout_marginTop="15dp"
+                android:textColor="#58b4ae"
+                android:textStyle="bold"
+                android:text="Overview"
+                android:textSize="18dp" />
+
             <TextView
                 android:id="@+id/item_overview"
-                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text2"
+                android:layout_marginTop="5dp"
                 android:text="Bla bla"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/text3"
-                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/item_overview"
-                android:text="Popularity:"
-                android:textSize="18dp"/>
+                android:layout_marginTop="15dp"
+                android:textColor="#58b4ae"
+                android:textStyle="bold"
+                android:text="Popularity"
+                android:textSize="18dp" />
+
             <TextView
                 android:id="@+id/item_popularity"
-                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text3"
+                android:layout_marginTop="5dp"
                 android:text="Bla bla"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/text4"
-                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_popularity"
-                android:text="Vote Average:"
-                android:textSize="18dp"/>
+                android:layout_below="@+id/item_overview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:textColor="#58b4ae"
+                android:textStyle="bold"
+                android:text="Vote Average"
+                android:textSize="18dp" />
+
             <TextView
                 android:id="@+id/item_vote_average"
-                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text4"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
                 android:text="Bla bla"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/text5"
-                android:layout_marginTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_vote_average"
-                android:text="Vote Count:"
-                android:textSize="18dp"/>
+                android:layout_below="@+id/item_overview"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:textColor="#58b4ae"
+                android:textStyle="bold"
+                android:text="Vote Count"
+                android:textSize="18dp" />
+
             <TextView
                 android:id="@+id/item_vote_count"
-                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text5"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
                 android:text="Bla bla"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </ScrollView>
-
-
-
 
 
 </RelativeLayout>

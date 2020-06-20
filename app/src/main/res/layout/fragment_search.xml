@@ -3,14 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/SearchStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Rien n'apparaitra si tu ne tapes rien dans la barre de recherche -_-"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -18,5 +10,14 @@
         android:background="#ffe2bc"
         android:padding="4dp"
         android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/SearchStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
+        android:text="Bla Bla"/>
 
 </RelativeLayout>

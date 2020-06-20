@@ -51,9 +51,13 @@ public class SearchFragment extends Fragment {
 
         SearchStatus = v.findViewById(R.id.SearchStatus);
         SearchStatus.setVisibility(View.VISIBLE);
-        if(isNetworkAvailable()){
-            setHasOptionsMenu(true);
+        if(isNetworkAvailable()==false){
+
             SearchStatus.setText("There is no internet connection :(");
+        }else{
+            setHasOptionsMenu(true);
+            Toast.makeText(getContext(), "HELLO", Toast.LENGTH_SHORT).show();
+            SearchStatus.setText("You can find movies by using the search bar at the top");
         }
 
         return v;
@@ -94,6 +98,7 @@ public class SearchFragment extends Fragment {
 
     public void showList(final List<Movie> movieList, View v){
         /*Initialization*/
+        SearchStatus.setVisibility(View.INVISIBLE);
         mRecyclerView = v.findViewById(R.id.recyclerView);
         //mRecyclerView.setHasFixedSize(true);//Recycler view doesn't change in size (Increase performance)
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -125,8 +130,6 @@ public class SearchFragment extends Fragment {
                 .build();
 
         MovieApiService movieApiService = retrofit.create(MovieApiService.class);
-
-        //TODO: send movie
         Call<MovieResponse> call = movieApiService.getSearchMovies(API_KEY, movieSearch);
 
         call.enqueue(new Callback<MovieResponse>() {
@@ -135,8 +138,13 @@ public class SearchFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null){
                     List<Movie> movies = response.body().getMovieList();
                     showList(movies, v);
+                    if(movies.size() == 0){
+                        SearchStatus.setText("What? No result? \nWe searched everywhere but we didn't find your request");
+                        SearchStatus.setVisibility(View.VISIBLE);
+                    }
                 }else {
                     showError();
+
                 }
             }
 
