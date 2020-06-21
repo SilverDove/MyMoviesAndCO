@@ -9,6 +9,12 @@
         app:actionViewClass="android.widget.SearchView"/>
 
     <item
+        android:id="@+id/TMDB"
+        android:icon="@drawable/ic_tmdb_logo"
+        android:title="TMDB"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/movieStatus"
         android:title="All"
         app:showAsAction="always" />

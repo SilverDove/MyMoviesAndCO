@@ -21,13 +21,16 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .withTargetActivity(MainActivity.class)
                 .withSplashTimeOut(5000)//5 seconds
                 .withBackgroundColor(Color.parseColor("#f0a500"))
-                .withFooterText(getString(R.string.Version))
+                .withAfterLogoText(getString(R.string.Version))
+                .withFooterText(getString(R.string.TMDB_Credits))
                 .withBeforeLogoText(getString(R.string.welcomeMessage))
                 .withLogo(R.drawable.cinema3);
 
         config.getFooterTextView().setTextColor(Color.WHITE);
         config.getBeforeLogoTextView().setTextColor(Color.WHITE);
-        config.getFooterTextView().setTextSize(12);
+        config.getAfterLogoTextView().setTextColor(Color.WHITE);
+        config.getAfterLogoTextView().setTextSize(12);
+        config.getFooterTextView().setTextSize(13);
         config.getBeforeLogoTextView().setTextSize(20);
         config.getLogo().setMaxHeight(800);
         config.getLogo().setMaxWidth(800);

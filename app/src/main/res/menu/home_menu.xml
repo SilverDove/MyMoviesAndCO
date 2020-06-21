@@ -7,10 +7,5 @@
         android:icon="@drawable/ic_tmdb_logo"
         android:title="TMDB"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/watchlist"
-        android:icon="@drawable/ic_playlist_add"
-        android:title="watchlist"
-        app:showAsAction="ifRoom" />
 
 </menu>

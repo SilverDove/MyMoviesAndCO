@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/TMDB"
+        android:icon="@drawable/ic_tmdb_logo"
+        android:title="TMDB"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
         android:title="Search"

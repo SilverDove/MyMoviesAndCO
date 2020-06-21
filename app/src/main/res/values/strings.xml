@@ -3,6 +3,7 @@
     <string name="noInternet">I can\'t find what you are looking for if I don\'t have internet -_-</string>
     <string name="searchHelp">You can find movies by using the search bar at the top corner of the screen</string>
     <string name="welcomeMessage"><![CDATA[Bienvenue dans Movie&Co\n\n\n\n]]></string>
-    <string name="Version">Version 1.0</string>
+    <string name="Version">\n\nVersion 1.0</string>
     <string name="NoResults">What? No results? \nWe searched everywhere but we didn\'t find what you were looking for :(</string>
+    <string name="TMDB_Credits">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
 </resources>
