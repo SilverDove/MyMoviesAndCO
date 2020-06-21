@@ -1,6 +1,5 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.presentation.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,18 +17,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mymoviesco.presentation.controller.WatchlistController;
+import com.example.mymoviesco.R;
+import com.example.mymoviesco.presentation.model.Movie;
+
 import java.util.List;
 
-import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
+import static com.example.mymoviesco.data.Constant.*;
 
 public class WatchlistFragment extends Fragment {
-
-    public static final String MOVIE_ALL = "com.example.mymoviesco.MOVIE_ALL";
-    public static final String MOVIE_WATCHED = "com.example.mymoviesco.MOVIE_WATCHED";
-    public static final String MOVIE_UNWATCHED = "com.example.mymoviesco.MOVIE_UNWATCHED";
-
     private static String listStatus;
-    private static AppDatabase db;
     private Menu m;
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
     private MyAdapter mAdapter;//bridge between our data and our recycler view
@@ -40,14 +37,28 @@ public class WatchlistFragment extends Fragment {
     private TextView emptyDatabase;
     private List<Movie> movieList;
 
+    private WatchlistController controller;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_watchlist, container, false);
         getActivity().setTitle("Watchlist");
-
         setHasOptionsMenu(true);
 
+        controller = new WatchlistController(this, v);
+        controller.onStart();
+
+        return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshList();
+    }
+
+    public void createScreen(View v){
         listStatus = MOVIE_ALL;
 
         deleteAll = v.findViewById(R.id.deleteAll);
@@ -60,24 +71,13 @@ public class WatchlistFragment extends Fragment {
 
         emptyDatabase = v.findViewById(R.id.emptyDatabase);
 
-        db = AppDatabase.getInstance(getContext());
-        movieList = db.movieDao().getMovies();
-
+        movieList = controller.getAllMovies();
         buildList(v);
-
-        return v;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println(listStatus);
-        refreshList();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        m=menu;
+        m = menu;
         inflater.inflate(R.menu.watchlist_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
@@ -95,81 +95,64 @@ public class WatchlistFragment extends Fragment {
             }
         });
 
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         MenuItem i = m.findItem(R.id.movieStatus);
-        switch (item.getItemId()){
-            case R.id.allMovies:
-                movieList.clear();
-                movieList = db.movieDao().getMovies();
+        switch (item.getItemId()) {
+            case R.id.allMovies://When select all icon
+                //display all the movies
+                movieList = controller.getAllMovies();
                 i.setTitle("All");
                 listStatus = MOVIE_ALL;
-
-                refreshList();
-
                 break;
 
-            case R.id.movieWatched:
-                movieList.clear();
-                movieList = db.movieDao().getWatched(true);
+            case R.id.movieWatched://When select watched icon
+                //display the watched movies
+                movieList = controller.getWatchedMovies();
                 i.setTitle("Watched");
                 listStatus = MOVIE_WATCHED;
-
-                refreshList();
-
                 break;
 
-            case R.id.movieUnwatched:
-                movieList.clear();
-                movieList = db.movieDao().getWatched(false);
+            case R.id.movieUnwatched://When select unwatched icon
+                //display the unwatched movies
+                movieList = controller.getUnwatchedMovies();
                 i.setTitle("Unwatched");
                 listStatus = MOVIE_UNWATCHED;
-
-                refreshList();
-
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        refreshList();
         return super.onOptionsItemSelected(item);
     }
 
-    public void refreshList(){
-        switch(listStatus){
-            case MOVIE_ALL:
+    public void refreshList() {//refresh the content of the list
+        switch (listStatus) {
+            case MOVIE_ALL://If we are displaying all the movies
                 deleteAll.setVisibility(View.VISIBLE);
                 deleteWatched.setVisibility(View.INVISIBLE);
                 deleteUnwatched.setVisibility(View.INVISIBLE);
 
-                if(movieList != null){
-                    movieList.clear();
-                }
-                movieList = db.movieDao().getMovies();
+                movieList = controller.getAllMovies();
 
                 break;
-            case MOVIE_WATCHED:
+            case MOVIE_WATCHED://If we are displaying the watched movies
                 deleteAll.setVisibility(View.INVISIBLE);
                 deleteWatched.setVisibility(View.VISIBLE);
                 deleteUnwatched.setVisibility(View.INVISIBLE);
 
-                if(movieList != null){
-                    movieList.clear();
-                }
-                movieList = db.movieDao().getWatched(true);
+                movieList = controller.getWatchedMovies();
 
                 break;
-            case MOVIE_UNWATCHED:
+            case MOVIE_UNWATCHED://If we are displaying the unwatched movies
                 deleteAll.setVisibility(View.INVISIBLE);
                 deleteWatched.setVisibility(View.INVISIBLE);
                 deleteUnwatched.setVisibility(View.VISIBLE);
 
-                if(movieList != null){
-                    movieList.clear();
-                }
-                movieList = db.movieDao().getWatched(false);
+                movieList = controller.getUnwatchedMovies();
 
                 break;
 
@@ -180,16 +163,15 @@ public class WatchlistFragment extends Fragment {
 
     }
 
-    public void buildList(View v){
+    public void buildList(View v) {//Create the list
         /*Initialization*/
-        if(movieList.size()==0){
+        if (movieList.size() == 0) {//If there is none movies
             emptyDatabase.setVisibility(View.VISIBLE);
             deleteAll.setVisibility(View.INVISIBLE);
             deleteWatched.setVisibility(View.INVISIBLE);
             deleteUnwatched.setVisibility(View.INVISIBLE);
             mAdapter.notifyDataSetChanged();
-        }else{
-            System.out.println("Hello, My list size is "+ movieList.size());
+        } else {
             emptyDatabase.setVisibility(View.INVISIBLE);
 
             mRecyclerView = v.findViewById(R.id.recyclerView);
@@ -202,64 +184,35 @@ public class WatchlistFragment extends Fragment {
             mAdapter.setOnItemListener(new MyAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {//Open new Activity to display details of the movie
-                    //Give movie selected in another page
-                    Intent intent = new Intent(getContext(), DetailsMovieActivity.class);
-                    intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
-                    startActivity(intent);
+                    controller.onClickMovie(position, movieList);
                 }
             });
         }
     }
 
-    public void onButton_AllDeleteClickListener(Button all_delete){
+    public void onButton_AllDeleteClickListener(Button all_delete) {//When click on the "Delete All" button
         all_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int size = db.movieDao().getNumberItems();
-                for(int i=0; i<size; i++){
-                    mAdapter.notifyItemRemoved(0);
-                }
-                movieList.clear();
-                db.movieDao().deleteTableMovie();
-                //deleteAll.setVisibility(View.INVISIBLE);
-                refreshList();
-
+                movieList = controller.onDeleteAll(mAdapter);//Delete all the movies
             }
         });
     }
 
-    public void onButton_AllWatchedClickListener(Button all_delete){
+    public void onButton_AllWatchedClickListener(Button all_delete) {//When click on the "Delete Watched" button
         all_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int size = movieList.size();
-                for(int i=0; i<size; i++){
-                    mAdapter.notifyItemRemoved(0);
-                }
-                movieList.clear();
-                db.movieDao().deleteMovieWatched(true);
-                movieList = db.movieDao().getWatched(true);
-                refreshList();
-                //deleteWatched.setVisibility(View.INVISIBLE);
-
+                movieList = controller.onDeleteWatched(mAdapter);//Delete the watched movies
             }
         });
     }
 
-    public void onButton_AllUnwatchedClickListener(Button all_delete){
+    public void onButton_AllUnwatchedClickListener(Button all_delete) {//When click on the "Delete Unwatched" button
         all_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int size = db.movieDao().getNumberItems();
-                for(int i=0; i<size; i++){
-                    mAdapter.notifyItemRemoved(0);
-                }
-                movieList.clear();
-                db.movieDao().deleteMovieWatched(false);
-                movieList = db.movieDao().getWatched(false);
-                refreshList();
-                //deleteUnwatched.setVisibility(View.INVISIBLE);
-
+                movieList = controller.onDeleteUnwatched(mAdapter);//Delete the unwatched movies
             }
         });
     }

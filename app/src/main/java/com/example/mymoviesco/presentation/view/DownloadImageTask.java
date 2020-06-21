@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.presentation.view;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

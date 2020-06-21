@@ -1,10 +1,12 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.presentation.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.mymoviesco.R;
 
 import gr.net.maroulis.library.EasySplashScreen;
 
@@ -19,8 +21,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .withTargetActivity(MainActivity.class)
                 .withSplashTimeOut(5000)//5 seconds
                 .withBackgroundColor(Color.parseColor("#f0a500"))
-                .withFooterText("Version 1.0")
-                .withBeforeLogoText("Bienvenue dans Movie&Co\n\n\n\n")
+                .withFooterText(getString(R.string.Version))
+                .withBeforeLogoText(getString(R.string.welcomeMessage))
                 .withLogo(R.drawable.cinema3);
 
         config.getFooterTextView().setTextColor(Color.WHITE);

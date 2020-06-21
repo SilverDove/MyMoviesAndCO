@@ -1,10 +1,7 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.presentation.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-
-import android.content.Intent;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,16 +15,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.mymoviesco.presentation.controller.DetailsMovieController;
+import com.example.mymoviesco.presentation.model.AppDatabase;
+import com.example.mymoviesco.R;
+import com.example.mymoviesco.presentation.model.Movie;
 
-import java.util.List;
-import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
-import static com.example.mymoviesco.MyAdapter.IMAGE_URL_BASE_PATH;
+import static com.example.mymoviesco.data.Constant.*;
 
 public class DetailsMovieActivity extends AppCompatActivity {
-
-    private AppDatabase db;
-    private Movie movie;
-    private boolean watchlist;
+    private DetailsMovieController controller;
     private Menu menu;
     private Switch simpleSwitch;
 
@@ -36,18 +32,15 @@ public class DetailsMovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_movie);
 
-        Intent intent = getIntent();
-        movie = intent.getParcelableExtra(EXTRA_MOVIE);
-
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//display button to go back to previous page
 
-        simpleSwitch = (Switch) findViewById(R.id.simpleSwitch);
-        db = AppDatabase.getInstance(this);
-        watchlist = checkMovieAlreadyInWatchlist();//Check if the movie is already in the watchlist
+        simpleSwitch = findViewById(R.id.simpleSwitch);
+
+        controller = new DetailsMovieController(this, AppDatabase.getInstance(this));
+        controller.onStart();
 
         SwitchActionListener();
-        BuildDetailsPage();//Display page with all the information
 
     }
 
@@ -57,10 +50,10 @@ public class DetailsMovieActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(simpleSwitch.isChecked()){//If the switch is 'On'
                     simpleSwitch.setText("Watched");
-                    db.movieDao().updateMovieWatched(true,movie.getId());
+                    controller.updateToMovieWatched();
                 }else{
                     simpleSwitch.setText("Unwatched");
-                    db.movieDao().updateMovieWatched(false,movie.getId());
+                    controller.updateToMovieUnwatched();
                 }
             }
         });
@@ -71,7 +64,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
         this.menu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.details_menu,menu);
-        if(watchlist == true) {//If the movie is already in the watchlist
+        if(controller.getWatchlistStatus() == true) {//If the movie is already in the watchlist
             menu.findItem(R.id.watchlist).setIcon(R.drawable.ic_playlist_add_check);
         }else{
             menu.findItem(R.id.watchlist).setIcon(R.drawable.ic_playlist_add);
@@ -83,20 +76,18 @@ public class DetailsMovieActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.watchlist:
-                if(watchlist==false){//If the movie is not in the watchlist
+                if(controller.getWatchlistStatus()==false){//If the movie is not in the watchlist
                     //add the movie into the database and change the icon
-                    db.movieDao().insertMovie(movie);
+                    controller.insertMovie();
                     item.setIcon(R.drawable.ic_playlist_add_check);
                     simpleSwitch.setVisibility(View.VISIBLE);
-                    watchlist=true;
-                    Toast.makeText(this, movie.getTitle()+" added in your watchlist", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, controller.getCurrentMovie().getTitle()+" added in your watchlist", Toast.LENGTH_SHORT).show();
                 }else{//Otherwise
                     //remove the movie into the database and change the icon
-                    db.movieDao().deleteMovie(movie);
+                    controller.removeMovie();
                     item.setIcon(R.drawable.ic_playlist_add);
                     simpleSwitch.setVisibility(View.INVISIBLE);
-                    watchlist=false;
-                    Toast.makeText(this, movie.getTitle()+" removed from your watchlist", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, controller.getCurrentMovie().getTitle()+" removed from your watchlist", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case android.R.id.home:
@@ -107,21 +98,10 @@ public class DetailsMovieActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkMovieAlreadyInWatchlist(){//Check if the current movie is already in the watchlist
-        List<Movie> movieList = db.movieDao().getMovies();
-
-        for (int i=0; i<movieList.size(); i++){
-            if(movieList.get(i).getId() == movie.getId()){//The movie is already in the watchlist
-                return true;
-            }
-        }
-        return false;//The movie is not in the watchlist
-    }
-
-    private void BuildDetailsPage(){
-        if(checkMovieAlreadyInWatchlist()){//If the movie is in the watchlist
+    public void BuildDetailsPage(Movie movie){
+        if(controller.checkMovieAlreadyInWatchlist()){//If the movie is in the watchlist
             simpleSwitch.setVisibility(View.VISIBLE);
-            if(watchlist == true && movie.getWatched()==true){//If the movie is in the database and watched
+            if(controller.getWatchlistStatus() == true && movie.getWatched()==true){//If the movie is in the database and watched
                 simpleSwitch.setText("Watched");
                 simpleSwitch.setChecked(true);
             }else{

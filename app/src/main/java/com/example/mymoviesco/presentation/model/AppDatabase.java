@@ -1,10 +1,12 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.presentation.model;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.example.mymoviesco.data.MovieDao;
 
 @Database(entities = {Movie.class}, version=2)
 public abstract class AppDatabase extends RoomDatabase {
