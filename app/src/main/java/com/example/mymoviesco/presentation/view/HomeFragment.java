@@ -22,7 +22,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
-    private HomeController controller;
+    private HomeController controller;//HomeController instance
 
     @Nullable
     @Override
@@ -36,8 +36,7 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
-    public void buildList(final List<Movie> movieList, View v){
-        /*Initialization*/
+    public void buildList(final List<Movie> movieList, View v){//Create and display the list of top movies
         mRecyclerView = v.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);//Recycler view doesn't change in size (Increase performance)
         mLayoutManager = new LinearLayoutManager(getContext());

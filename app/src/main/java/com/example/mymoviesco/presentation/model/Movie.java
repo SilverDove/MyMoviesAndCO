@@ -47,10 +47,6 @@ public class Movie implements Parcelable {
     @SerializedName("original_title")
     private String original_title;
 
-    /*@ColumnInfo(name = "genre_ids")
-    @SerializedName("genre_ids")
-    private List<Integer> genre_ids= new ArrayList<Integer>();*/
-
     @ColumnInfo(name = "title")
     @SerializedName("title")
     private String title;
@@ -67,11 +63,10 @@ public class Movie implements Parcelable {
     @SerializedName("release_date")
     private String release_date;
 
-
     @ColumnInfo(name = "watched")
     private boolean watched;
 
-    public Movie(double popularity, int vote_count, boolean video, String poster_path, int id, boolean adult, String backdrop_path, String original_language, String original_title, /*List<Integer> genre_ids,*/ String title, double vote_average, String overview, String release_date) {
+    public Movie(double popularity, int vote_count, boolean video, String poster_path, int id, boolean adult, String backdrop_path, String original_language, String original_title, String title, double vote_average, String overview, String release_date) {
         this.popularity = popularity;
         this.vote_count = vote_count;
         this.video = video;
@@ -81,7 +76,6 @@ public class Movie implements Parcelable {
         this.backdrop_path = backdrop_path;
         this.original_language = original_language;
         this.original_title = original_title;
-        //this.genre_ids = genre_ids;
         this.title = title;
         this.vote_average = vote_average;
         this.overview = overview;
@@ -185,10 +179,6 @@ public class Movie implements Parcelable {
         this.original_title = original_title;
     }
 
-    /*public void setGenre_ids(List<Integer> genre_ids) {
-        this.genre_ids = genre_ids;
-    }*/
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -240,10 +230,6 @@ public class Movie implements Parcelable {
     public String getOriginal_title() {
         return original_title;
     }
-
-    /*public List<Integer> getGenre_ids() {
-        return genre_ids;
-    }*/
 
     public String getTitle() {
         return title;

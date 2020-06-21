@@ -28,11 +28,10 @@ public class SearchController {
         this.v = v;
     }
 
-    public void onClickMovie(int position, List<Movie> movieList) {
-        //Give movie selected in another page
+    public void onClickMovie(int position, List<Movie> movieList) {//See details of the selected movie
         Intent intent = new Intent(searchView.getContext(), DetailsMovieActivity.class);
         intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
-        searchView.getContext().startActivity(intent);
+        searchView.getContext().startActivity(intent);//Go to DetailsMovieActivity
     }
 
     public void makeAPICall(final View v, String movieSearch){
@@ -44,10 +43,7 @@ public class SearchController {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 if (response.isSuccessful() && response.body() != null){
                     List<Movie> movies = response.body().getMovieList();
-                    searchView.showList(movies, v);
-                }else {
-                    showError();
-
+                    searchView.showList(movies, v);//show the result of what the user typed
                 }
             }
 

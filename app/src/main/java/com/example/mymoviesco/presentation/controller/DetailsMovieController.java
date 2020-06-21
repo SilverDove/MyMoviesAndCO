@@ -1,7 +1,6 @@
 package com.example.mymoviesco.presentation.controller;
 
 import android.content.Intent;
-import android.view.View;
 
 import com.example.mymoviesco.presentation.model.AppDatabase;
 import com.example.mymoviesco.presentation.model.Movie;
@@ -12,10 +11,10 @@ import java.util.List;
 import static com.example.mymoviesco.data.Constant.EXTRA_MOVIE;
 
 public class DetailsMovieController {
-    private DetailsMovieActivity detailsMovieView;
-    private AppDatabase db;
-    private Movie movie;
-    private boolean watchlist;
+    private DetailsMovieActivity detailsMovieView; //Instance of the DetailsMovieActivity
+    private AppDatabase db;//Instance of the database
+    private Movie movie; //Current movie displayed on the screen
+    private boolean watchlist;// Status of the current movie (in the watchlist or not)
 
     public DetailsMovieController(DetailsMovieActivity detailsMovieView, AppDatabase db){
         this.detailsMovieView = detailsMovieView;
@@ -23,11 +22,12 @@ public class DetailsMovieController {
     }
 
     public void onStart(){
+        // --- Get information about the item clicked in RecyclerView ---
         Intent intent = detailsMovieView.getIntent();
         Movie m = intent.getParcelableExtra(EXTRA_MOVIE);
         this.movie = m;
 
-        this.watchlist = checkMovieAlreadyInWatchlist();
+        this.watchlist = checkMovieAlreadyInWatchlist();//Check if the current movie is already in the database
 
         detailsMovieView.BuildDetailsPage(movie);//Display page with all the information
     }
@@ -56,19 +56,19 @@ public class DetailsMovieController {
     }
 
     public void updateToMovieWatched(){
-        db.movieDao().updateMovieWatched(true,movie.getId());
+        db.movieDao().updateMovieWatched(true,movie.getId());//The user whatched this movie
     }
 
     public void updateToMovieUnwatched(){
-        db.movieDao().updateMovieWatched(false,movie.getId());
+        db.movieDao().updateMovieWatched(false,movie.getId());//The user didn't watch this movie
     }
 
-    public void insertMovie(){
+    public void insertMovie(){//Insert the movie into the database
         db.movieDao().insertMovie(movie);
         setWatchlistStatus(true);
     }
 
-    public void removeMovie(){
+    public void removeMovie(){//remove the movie into the watchlist
         db.movieDao().deleteMovie(movie);
         setWatchlistStatus(false);
     }

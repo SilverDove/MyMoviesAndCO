@@ -29,70 +29,69 @@ public class WatchlistController {
         watchlistView.createScreen(v);
     }
 
-    public void onClickMovie(int position, List<Movie> movieList) {
-        //Give movie selected in another page
+    public void onClickMovie(int position, List<Movie> movieList) {//See details of the selected movie
         Intent intent = new Intent(watchlistView.getContext(), DetailsMovieActivity.class);
         intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
-        watchlistView.getContext().startActivity(intent);
+        watchlistView.getContext().startActivity(intent);//Go to DetailsMovieActivity
     }
 
-    public List<Movie> onDeleteAll(MyAdapter mAdapter){
+    public List<Movie> onDeleteAll(MyAdapter mAdapter){//Delete all the movies
         int size = movieList.size();
         for (int i = 0; i < size; i++) {
             mAdapter.notifyItemRemoved(0);
         }
         clearMovieList();
-        db.movieDao().deleteTableMovie();
-        watchlistView.refreshList();
+        db.movieDao().deleteTableMovie();//Delete all the movies from the database
+        watchlistView.refreshList();//Update the list
 
         return movieList;
     }
 
-    public List<Movie> onDeleteWatched(MyAdapter mAdapter){
+    public List<Movie> onDeleteWatched(MyAdapter mAdapter){//Delete all the movies watched
         int size = movieList.size();
         for (int i = 0; i < size; i++) {
             mAdapter.notifyItemRemoved(0);
         }
         clearMovieList();
-        db.movieDao().deleteMovieWatched(true);
+        db.movieDao().deleteMovieWatched(true);//Delete all the movies watched from the database
         movieList = db.movieDao().getWatched(true);
-        watchlistView.refreshList();
+        watchlistView.refreshList();//refresh the list
 
         return movieList;
     }
 
-    public List<Movie> onDeleteUnwatched(MyAdapter mAdapter){
+    public List<Movie> onDeleteUnwatched(MyAdapter mAdapter){//Delete all the movies unwatched
         int size = db.movieDao().getNumberItems();
         for (int i = 0; i < size; i++) {
             mAdapter.notifyItemRemoved(0);
         }
         clearMovieList();
-        db.movieDao().deleteMovieWatched(false);
+        db.movieDao().deleteMovieWatched(false);//Delete all the movies unwatched from the database
         movieList = db.movieDao().getWatched(false);
-        watchlistView.refreshList();
+        watchlistView.refreshList();//refresh the list
 
         return movieList;
     }
 
-    public List<Movie> getAllMovies(){
+    public List<Movie> getAllMovies(){//Get all the movies from the database
         clearMovieList();
         movieList = db.movieDao().getMovies();
         return movieList;
     }
 
-    public List<Movie> getWatchedMovies(){
+    public List<Movie> getWatchedMovies(){//Get all the movies watched from the database
         clearMovieList();
         movieList = db.movieDao().getWatched(true);
         return movieList;
     }
 
-    public List<Movie> getUnwatchedMovies(){
+    public List<Movie> getUnwatchedMovies(){//Get all the movies unwatched from the database
         clearMovieList();
         movieList = db.movieDao().getWatched(false);
         return movieList;
     }
 
-    public void clearMovieList(){
+    public void clearMovieList(){//Clear the list of movies
         if(movieList != null){
             movieList.clear();
         }

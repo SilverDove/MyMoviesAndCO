@@ -30,29 +30,25 @@ public class HomeController {
     public HomeController(HomeFragment homeView, View v) {
         this.v = v;
         this.homeView = homeView;
-
     }
 
     public void onStart() {
         emptyMessage = v.findViewById(R.id.emptyMessage);
-
-        if (Internet.isNetworkAvailable(homeView.getActivity())) {
+        if (Internet.isNetworkAvailable(homeView.getActivity())) {//If there is internet connection
             makeAPICall();
-            System.out.println("INTERNET");
+            emptyMessage.setVisibility(View.INVISIBLE);
         } else {
             emptyMessage.setVisibility(View.VISIBLE);
-            System.out.println("NO INTERNET");
         }
     }
 
-    public void onClickMovie(int position, List<Movie> movieList) {
-        //Give movie selected in another page
+    public void onClickMovie(int position, List<Movie> movieList) {//Go to MovieDetailsActivity
         Intent intent = new Intent(homeView.getContext(), DetailsMovieActivity.class);
-        intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
-        homeView.getContext().startActivity(intent);
+        intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie clicked
+        homeView.getContext().startActivity(intent);//change activity
     }
 
-    private void makeAPICall() {
+    private void makeAPICall() {//Get list of top movies from API
         Call<MovieResponse> call = Singletons.getMovieApiServiceInstance().getPopularMovies(API_KEY);
 
         call.enqueue(new Callback<MovieResponse>() {
@@ -60,9 +56,9 @@ public class HomeController {
             public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Movie> movies = response.body().getMovieList();
-                    if (movies.size() > 0) {
+                    if (movies.size() > 0) {//If there is at least one movie
                         emptyMessage.setVisibility(View.INVISIBLE);
-                        homeView.buildList(movies, v);
+                        homeView.buildList(movies, v);//display the list of top movies
                     } else {
                         emptyMessage.setVisibility(View.VISIBLE);
                     }

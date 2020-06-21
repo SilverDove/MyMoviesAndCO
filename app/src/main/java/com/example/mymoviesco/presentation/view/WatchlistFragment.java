@@ -102,19 +102,22 @@ public class WatchlistFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         MenuItem i = m.findItem(R.id.movieStatus);
         switch (item.getItemId()) {
-            case R.id.allMovies:
+            case R.id.allMovies://When select all icon
+                //display all the movies
                 movieList = controller.getAllMovies();
                 i.setTitle("All");
                 listStatus = MOVIE_ALL;
                 break;
 
-            case R.id.movieWatched:
+            case R.id.movieWatched://When select watched icon
+                //display the watched movies
                 movieList = controller.getWatchedMovies();
                 i.setTitle("Watched");
                 listStatus = MOVIE_WATCHED;
                 break;
 
-            case R.id.movieUnwatched:
+            case R.id.movieUnwatched://When select unwatched icon
+                //display the unwatched movies
                 movieList = controller.getUnwatchedMovies();
                 i.setTitle("Unwatched");
                 listStatus = MOVIE_UNWATCHED;
@@ -126,9 +129,9 @@ public class WatchlistFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void refreshList() {
+    public void refreshList() {//refresh the content of the list
         switch (listStatus) {
-            case MOVIE_ALL:
+            case MOVIE_ALL://If we are displaying all the movies
                 deleteAll.setVisibility(View.VISIBLE);
                 deleteWatched.setVisibility(View.INVISIBLE);
                 deleteUnwatched.setVisibility(View.INVISIBLE);
@@ -136,7 +139,7 @@ public class WatchlistFragment extends Fragment {
                 movieList = controller.getAllMovies();
 
                 break;
-            case MOVIE_WATCHED:
+            case MOVIE_WATCHED://If we are displaying the watched movies
                 deleteAll.setVisibility(View.INVISIBLE);
                 deleteWatched.setVisibility(View.VISIBLE);
                 deleteUnwatched.setVisibility(View.INVISIBLE);
@@ -144,7 +147,7 @@ public class WatchlistFragment extends Fragment {
                 movieList = controller.getWatchedMovies();
 
                 break;
-            case MOVIE_UNWATCHED:
+            case MOVIE_UNWATCHED://If we are displaying the unwatched movies
                 deleteAll.setVisibility(View.INVISIBLE);
                 deleteWatched.setVisibility(View.INVISIBLE);
                 deleteUnwatched.setVisibility(View.VISIBLE);
@@ -160,9 +163,9 @@ public class WatchlistFragment extends Fragment {
 
     }
 
-    public void buildList(View v) {
+    public void buildList(View v) {//Create the list
         /*Initialization*/
-        if (movieList.size() == 0) {
+        if (movieList.size() == 0) {//If there is none movies
             emptyDatabase.setVisibility(View.VISIBLE);
             deleteAll.setVisibility(View.INVISIBLE);
             deleteWatched.setVisibility(View.INVISIBLE);
@@ -187,29 +190,29 @@ public class WatchlistFragment extends Fragment {
         }
     }
 
-    public void onButton_AllDeleteClickListener(Button all_delete) {
+    public void onButton_AllDeleteClickListener(Button all_delete) {//When click on the "Delete All" button
         all_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                movieList = controller.onDeleteAll(mAdapter);
+                movieList = controller.onDeleteAll(mAdapter);//Delete all the movies
             }
         });
     }
 
-    public void onButton_AllWatchedClickListener(Button all_delete) {
+    public void onButton_AllWatchedClickListener(Button all_delete) {//When click on the "Delete Watched" button
         all_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                movieList = controller.onDeleteWatched(mAdapter);
+                movieList = controller.onDeleteWatched(mAdapter);//Delete the watched movies
             }
         });
     }
 
-    public void onButton_AllUnwatchedClickListener(Button all_delete) {
+    public void onButton_AllUnwatchedClickListener(Button all_delete) {//When click on the "Delete Unwatched" button
         all_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                movieList = controller.onDeleteUnwatched(mAdapter);
+                movieList = controller.onDeleteUnwatched(mAdapter);//Delete the unwatched movies
             }
         });
     }

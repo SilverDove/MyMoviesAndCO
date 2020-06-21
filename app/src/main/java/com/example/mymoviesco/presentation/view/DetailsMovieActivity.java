@@ -20,7 +20,7 @@ import com.example.mymoviesco.presentation.model.AppDatabase;
 import com.example.mymoviesco.R;
 import com.example.mymoviesco.presentation.model.Movie;
 
-import static com.example.mymoviesco.presentation.view.MyAdapter.IMAGE_URL_BASE_PATH;
+import static com.example.mymoviesco.data.Constant.*;
 
 public class DetailsMovieActivity extends AppCompatActivity {
     private DetailsMovieController controller;
@@ -80,6 +80,7 @@ public class DetailsMovieActivity extends AppCompatActivity {
                     //add the movie into the database and change the icon
                     controller.insertMovie();
                     item.setIcon(R.drawable.ic_playlist_add_check);
+                    simpleSwitch.setVisibility(View.VISIBLE);
                     Toast.makeText(this, controller.getCurrentMovie().getTitle()+" added in your watchlist", Toast.LENGTH_SHORT).show();
                 }else{//Otherwise
                     //remove the movie into the database and change the icon

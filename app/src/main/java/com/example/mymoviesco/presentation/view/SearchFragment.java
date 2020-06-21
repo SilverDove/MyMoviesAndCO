@@ -41,11 +41,11 @@ public class SearchFragment extends Fragment {
 
         SearchStatus = v.findViewById(R.id.SearchStatus);
         SearchStatus.setVisibility(View.VISIBLE);
-        if(Internet.isNetworkAvailable(getActivity())==false){
-            SearchStatus.setText("There is no internet connection :(");
+        if(Internet.isNetworkAvailable(getActivity())==false){//If there is no internet connection
+            SearchStatus.setText(R.string.noInternet);
         }else{
             setHasOptionsMenu(true);
-            SearchStatus.setText("You can find movies by using the search bar at the top");
+            SearchStatus.setText(R.string.searchHelp);
         }
 
         return v;
@@ -54,39 +54,44 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.search_menu, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setIconified(true);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                searchView.setIconified(true);
+                searchView.setIconified(true);
                 SearchStatus.setVisibility(View.INVISIBLE);
-                controller.makeAPICall(getView(), s);
+                controller.makeAPICall(getView(), s);//Get list of movies asked by the user
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
                 SearchStatus.setVisibility(View.INVISIBLE);
-                controller.makeAPICall(getView(), s);
+                controller.makeAPICall(getView(), s);//Get list of movies asked by the user
                 return false;
             }
         });
-
         super.onCreateOptionsMenu(menu,inflater);
     }
 
-    public void showList(final List<Movie> movieList, View v){
+    public void showList(final List<Movie> movieList, View v){//Display the list of movies
         /*Initialization*/
         SearchStatus.setVisibility(View.INVISIBLE);
         mRecyclerView = v.findViewById(R.id.recyclerView);
-        //mRecyclerView.setHasFixedSize(true);//Recycler view doesn't change in size (Increase performance)
         mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new MyAdapter(movieList, getContext());
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        if(movieList.size()==0){
+            SearchStatus.setVisibility(View.VISIBLE);
+            SearchStatus.setText(R.string.NoResults);
+        }
 
         mAdapter.setOnItemListener(new MyAdapter.OnItemClickListener() {
             @Override

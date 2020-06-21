@@ -19,6 +19,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.mymoviesco.data.Constant.*;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements Filterable {
     private List<Movie> movies;
     private List<Movie> moviesListFull;
@@ -26,24 +28,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position);//When click on one item of the list
     }
 
     public void setOnItemListener(OnItemClickListener listener){
             mListener = listener;
     }
 
-    public static final String IMAGE_URL_BASE_PATH="https://image.tmdb.org/t/p/w342//";
-
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         /*Elements for one item*/
-        public ImageView mImageMovie;//contains ImageView of our item
-        public TextView mTitle;//contains TextView of our item
-        public TextView mDate;
-        public TextView mDescription;
+        public ImageView mImageMovie;//contains the poster of our item
+        public TextView mTitle;//contains the title of our item
+        public TextView mDate;//contains the release date of our item
+        public TextView mDescription;//contains the description of our item
 
-        public ImageView mImageRating;//contains ImageView of our item
-        public TextView mRatings;//contains TextView of our item
+        public ImageView mImageRating;//contains the star icon of our item
+        public TextView mRatings;//contains the rating of our item
 
         public MyViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -92,7 +92,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         Movie currentMovie = movies.get(position);//get item at a specific position
         String image_url;
         if(currentMovie.getPoster_path() == null){//If there is no picture available
-            image_url = "https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103595_960_720.png";
+            image_url = IMAGE_URL_NO_INTERNET;
         }else{
             image_url = IMAGE_URL_BASE_PATH + currentMovie.getPoster_path();
         }
@@ -128,7 +128,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Movie> filteredList = new ArrayList<>();
 
-            if (constraint == null || constraint.length() == 0){ //If our inout field is empty
+            if (constraint == null || constraint.length() == 0){ //If our input field is empty
                 //Show all the movies from the database
                 filteredList.addAll(moviesListFull);
             }else{
