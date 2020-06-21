@@ -1,9 +1,5 @@
-package com.example.mymoviesco.view;
+package com.example.mymoviesco.presentation.view;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,24 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mymoviesco.Internet;
-import com.example.mymoviesco.MovieApiService;
+import com.example.mymoviesco.data.Internet;
 import com.example.mymoviesco.R;
-import com.example.mymoviesco.controller.SearchController;
-import com.example.mymoviesco.model.Movie;
-import com.example.mymoviesco.model.MovieResponse;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.mymoviesco.presentation.controller.SearchController;
+import com.example.mymoviesco.presentation.model.Movie;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.example.mymoviesco.Constant.*;
 
 public class SearchFragment extends Fragment {
 

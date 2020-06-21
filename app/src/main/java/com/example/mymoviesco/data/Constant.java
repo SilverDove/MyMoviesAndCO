@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.data;
 
 public class Constant {
 

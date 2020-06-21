@@ -1,4 +1,4 @@
-package com.example.mymoviesco.view;
+package com.example.mymoviesco.presentation.view;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,11 +7,11 @@ import android.os.Bundle;
 import com.example.mymoviesco.R;
 
 
-public class WatchlistActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_watchlist);
+        setContentView(R.layout.activity_home);
     }
 }

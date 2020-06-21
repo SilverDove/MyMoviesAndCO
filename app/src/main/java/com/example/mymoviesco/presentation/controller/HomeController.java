@@ -1,17 +1,17 @@
-package com.example.mymoviesco.controller;
+package com.example.mymoviesco.presentation.controller;
 
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mymoviesco.Internet;
-import com.example.mymoviesco.Singletons;
+import com.example.mymoviesco.data.Internet;
+import com.example.mymoviesco.data.Singletons;
 import com.example.mymoviesco.R;
-import com.example.mymoviesco.model.Movie;
-import com.example.mymoviesco.model.MovieResponse;
-import com.example.mymoviesco.view.DetailsMovieActivity;
-import com.example.mymoviesco.view.HomeFragment;
+import com.example.mymoviesco.presentation.model.Movie;
+import com.example.mymoviesco.presentation.model.MovieResponse;
+import com.example.mymoviesco.presentation.view.DetailsMovieActivity;
+import com.example.mymoviesco.presentation.view.HomeFragment;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.mymoviesco.Constant.*;
+import static com.example.mymoviesco.data.Constant.*;
 
 public class HomeController {
     private TextView emptyMessage;

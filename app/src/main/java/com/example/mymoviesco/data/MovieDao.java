@@ -1,11 +1,11 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.data;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.mymoviesco.model.Movie;
+import com.example.mymoviesco.presentation.model.Movie;
 
 import java.util.List;
 

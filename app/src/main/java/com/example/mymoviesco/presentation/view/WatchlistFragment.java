@@ -1,6 +1,5 @@
-package com.example.mymoviesco.view;
+package com.example.mymoviesco.presentation.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,14 +17,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mymoviesco.controller.WatchlistController;
-import com.example.mymoviesco.model.AppDatabase;
+import com.example.mymoviesco.presentation.controller.WatchlistController;
 import com.example.mymoviesco.R;
-import com.example.mymoviesco.model.Movie;
+import com.example.mymoviesco.presentation.model.Movie;
 
 import java.util.List;
 
-import static com.example.mymoviesco.Constant.*;
+import static com.example.mymoviesco.data.Constant.*;
 
 public class WatchlistFragment extends Fragment {
     private static String listStatus;

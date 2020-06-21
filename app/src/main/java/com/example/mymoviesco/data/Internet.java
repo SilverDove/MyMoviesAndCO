@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.data;
 
 import android.app.Activity;
 import android.content.Context;

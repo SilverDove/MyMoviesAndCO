@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.WatchlistActivity">
+    tools:context=".presentation.view.WatchlistActivity">
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.example.mymoviesco.view.WatchlistFragment"
+        android:name="com.example.mymoviesco.presentation.view.WatchlistFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"

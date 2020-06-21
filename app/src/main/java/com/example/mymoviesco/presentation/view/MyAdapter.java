@@ -1,4 +1,4 @@
-package com.example.mymoviesco.view;
+package com.example.mymoviesco.presentation.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviesco.R;
-import com.example.mymoviesco.model.Movie;
+import com.example.mymoviesco.presentation.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

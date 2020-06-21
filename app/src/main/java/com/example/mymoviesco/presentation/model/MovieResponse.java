@@ -1,4 +1,4 @@
-package com.example.mymoviesco.model;
+package com.example.mymoviesco.presentation.model;
 
 import com.google.gson.annotations.SerializedName;
 

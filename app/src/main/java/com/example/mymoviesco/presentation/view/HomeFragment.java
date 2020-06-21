@@ -1,4 +1,4 @@
-package com.example.mymoviesco.view;
+package com.example.mymoviesco.presentation.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviesco.R;
-import com.example.mymoviesco.controller.HomeController;
-import com.example.mymoviesco.model.Movie;
+import com.example.mymoviesco.presentation.controller.HomeController;
+import com.example.mymoviesco.presentation.model.Movie;
 
 import java.util.List;
 

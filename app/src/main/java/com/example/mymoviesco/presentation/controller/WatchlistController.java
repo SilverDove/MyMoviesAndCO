@@ -1,18 +1,17 @@
-package com.example.mymoviesco.controller;
+package com.example.mymoviesco.presentation.controller;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.Adapter;
 
-import com.example.mymoviesco.model.AppDatabase;
-import com.example.mymoviesco.model.Movie;
-import com.example.mymoviesco.view.DetailsMovieActivity;
-import com.example.mymoviesco.view.MyAdapter;
-import com.example.mymoviesco.view.WatchlistFragment;
+import com.example.mymoviesco.presentation.model.AppDatabase;
+import com.example.mymoviesco.presentation.model.Movie;
+import com.example.mymoviesco.presentation.view.DetailsMovieActivity;
+import com.example.mymoviesco.presentation.view.MyAdapter;
+import com.example.mymoviesco.presentation.view.WatchlistFragment;
 
 import java.util.List;
 
-import static com.example.mymoviesco.Constant.EXTRA_MOVIE;
+import static com.example.mymoviesco.data.Constant.EXTRA_MOVIE;
 
 public class WatchlistController {
     private static AppDatabase db;

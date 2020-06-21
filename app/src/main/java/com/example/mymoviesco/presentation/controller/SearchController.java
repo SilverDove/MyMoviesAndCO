@@ -1,29 +1,23 @@
-package com.example.mymoviesco.controller;
+package com.example.mymoviesco.presentation.controller;
 
 import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.mymoviesco.MovieApiService;
-import com.example.mymoviesco.Singletons;
-import com.example.mymoviesco.model.Movie;
-import com.example.mymoviesco.model.MovieResponse;
-import com.example.mymoviesco.view.DetailsMovieActivity;
-import com.example.mymoviesco.view.SearchFragment;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.mymoviesco.data.Singletons;
+import com.example.mymoviesco.presentation.model.Movie;
+import com.example.mymoviesco.presentation.model.MovieResponse;
+import com.example.mymoviesco.presentation.view.DetailsMovieActivity;
+import com.example.mymoviesco.presentation.view.SearchFragment;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.mymoviesco.Constant.API_KEY;
-import static com.example.mymoviesco.Constant.BASE_URL;
-import static com.example.mymoviesco.Constant.EXTRA_MOVIE;
+import static com.example.mymoviesco.data.Constant.API_KEY;
+import static com.example.mymoviesco.data.Constant.EXTRA_MOVIE;
 
 public class SearchController {
     private SearchFragment searchView;

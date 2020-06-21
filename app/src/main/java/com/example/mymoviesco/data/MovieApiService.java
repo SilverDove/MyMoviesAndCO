@@ -1,6 +1,6 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.data;
 
-import com.example.mymoviesco.model.MovieResponse;
+import com.example.mymoviesco.presentation.model.MovieResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

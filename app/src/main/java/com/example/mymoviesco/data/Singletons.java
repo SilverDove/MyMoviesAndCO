@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.mymoviesco.Constant.BASE_URL;
+import static com.example.mymoviesco.data.Constant.BASE_URL;
 
 public class Singletons {
 
