@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mymoviesco.R;
+import com.example.mymoviesco.Singletons;
 import com.example.mymoviesco.controller.HomeController;
 import com.example.mymoviesco.model.Movie;
 import com.google.gson.GsonBuilder;
@@ -40,17 +41,7 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home : Top movies");
 
-        controller = new HomeController(this,v,
-                new GsonBuilder()
-                .setLenient()
-                .create(),
-                new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(
-                        new GsonBuilder()
-                        .setLenient()
-                        .create()))
-                .build());
+        controller = new HomeController(this,v, Singletons.getGsonInstance());
         controller.onStart();
 
         return v;

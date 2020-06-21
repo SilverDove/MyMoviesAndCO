@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mymoviesco.MovieApiService;
+import com.example.mymoviesco.Singletons;
 import com.example.mymoviesco.R;
 import com.example.mymoviesco.model.Movie;
 import com.example.mymoviesco.model.MovieResponse;
@@ -28,7 +28,7 @@ public class HomeController {
     private View v;
 
 
-    public HomeController(HomeFragment homeView, View v, Gson gson, Retrofit retrofit){
+    public HomeController(HomeFragment homeView, View v, Gson gson){
         this.gson = gson;
         this.retrofit =retrofit;
         this.v = v;
@@ -49,9 +49,7 @@ public class HomeController {
     }
 
     private void makeAPICall(){
-        MovieApiService movieApiService = retrofit.create(MovieApiService.class);
-
-        Call<MovieResponse> call = movieApiService.getPopularMovies(API_KEY);
+        Call<MovieResponse> call = Singletons.getMovieApiServiceInstance().getPopularMovies(API_KEY);
 
         call.enqueue(new Callback<MovieResponse>() {
             @Override
