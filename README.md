@@ -6,10 +6,11 @@ This project is an Android application helping the users to track the movies the
 It uses the online database TMDB as a API to access a list of movies.
 It is intuitive and optimized for the ease of everyone. Enjoy it!
 
-
 ## Getting Started
 1. Download and install [Android Studio](https://developer.android.com/studio/)
-2. Clone or download the project via the [master branch](https://github.com/SilverDove/MyMoviesAndCO.git). It's also possibel to fetch the [release project](https://github.com/SilverDove/MyMoviesAndCO/releases/tag/1.0)
+2. Clone or download the [master branch](https://github.com/SilverDove/MyMoviesAndCO.git) using the functionalities of Android Studio. 
+It's also possible to fetch the [release project](https://github.com/SilverDove/MyMoviesAndCO/releases/tag/1.0) and then import it directly to Android Studio.
+
 
 ## Features
 
@@ -20,16 +21,16 @@ It is intuitive and optimized for the ease of everyone. Enjoy it!
 * Stockage of data in the cache
 
 ### What I implemented
-* Four screeens: 3 fragments and 2 activities
-    * Home page
-    * Search Page
-    * Watchlist
-    * DetailsMovie
-    * Splash Screen
+* Five screens: 3 fragments and 2 activities
+    * Home page: the list of the current popular movies is displayed
+    * Search Page: possibility to search movie
+    * Watchlist: list of movies the user want to watch or have already watched
+    * DetailsMovie: display extra information about a specific movie
+    * Splash Screen: launch screen
 * API Rest call from TMDB API
-* Room Database
-* Bottom Navigation using fragments
-* SearchBar with a filter
+* Room Database to store the movies in the watchlist
+* Bottom Navigation to navigate between the Home page, the Search Page and the Watchlist
+* SearchBar with filtering
 * Icon app
 * MVC architecture
 * Singleton
@@ -37,27 +38,30 @@ It is intuitive and optimized for the ease of everyone. Enjoy it!
 * GitFlow up-to-date
 * Copyright
 
+
  ## Overview
+ 
  ### Spash Screen
   It appears each time the user launch the application. It shows the application logo and other information during 5 seconds
+ 
  ![alt text](https://github.com/SilverDove/MyMoviesAndCO/blob/master/ScreenShot_MyMovies%26Co/Splash_Screen.png)
  
+ 
  ### Home Page
- It displays the current popular movies from TMDb. This list updates daily.
+ It displays the list of the current popular movies from TMDb. This list updates daily.
 
  ![](https://github.com/SilverDove/MyMoviesAndCO/blob/master/ScreenShot_MyMovies%26Co/Home_Page.png)
  
- * **No Internet connection:** When there is no internet connection, the list of the current popular movies can't be displayed
+ * **No Internet connection:** When there is no internet connection, the list can't be displayed and a messag appears.
  
  ![](https://github.com/SilverDove/MyMoviesAndCO/blob/master/ScreenShot_MyMovies%26Co/HomePage_NoInternet.png)
- 
   
  ### Details Movie
- After clicking on a specific movie from the list, it displays extra information about this movie. It's from this page that the user can add or remove a movie from the watchlist. When the movie is added in the watchlist, the user can indicate if the movie was watched or not.
+ After clicking on a specific movie from the list, it displays extra information about it. It's from this page that the user can add or remove a movie from the watchlist. When the movie is added into the watchlist, the user can indicate if the movie was watched or not.
      
  ![](https://github.com/SilverDove/MyMoviesAndCO/blob/master/ScreenShot_MyMovies%26Co/DetailsMovie.png)
  
- * **Add into the watchlist:** To add a movie in the watchlist, the user need to click on the icon at the top right of the screen. Then, the icon changes to indicate that the movie is already in the watchlist. Moreover, a toast appear during few seconds and the watched/unwatched option appears.
+ * **Add into the watchlist:** To add a movie in the watchlist, the user need to click on the icon at the top right of the screen. Then, the icon changes to indicate that the movie is in the watchlist. Moreover, a toast appears during few seconds and the watched/unwatched option appears as well.
  
  ![](https://github.com/SilverDove/MyMoviesAndCO/blob/master/ScreenShot_MyMovies%26Co/DetailsMovie_Add.png)
  
@@ -65,14 +69,14 @@ It is intuitive and optimized for the ease of everyone. Enjoy it!
  
  ![](https://github.com/SilverDove/MyMoviesAndCO/blob/master/ScreenShot_MyMovies%26Co/DetailsMovie_Watched.png)
  
- * **Remove from the watchlist:** To remove a movie from the watchlist, the user need to click on the icon at the top right of the screen. Then, the icon changes to indicate that the movie is not in the watchlist. Moreover, a toast appear during few seconds and the watched/unwatched option disapears.
+ * **Remove from the watchlist:** To remove a movie from the watchlist, the user need to click on the icon at the top right of the screen. Then, the icon changes to indicate that the movie is not in the watchlist. Moreover, a toast appears during few seconds and the watched/unwatched option disapears.
  
  ![](https://github.com/SilverDove/MyMoviesAndCO/blob/master/ScreenShot_MyMovies%26Co/DetailsMovie_Remove.png)
          
  ### Watchlist
- This page contains the movies the user wants to watched or already watched. The user can filter the list by using the searchBar or using the navigation at the top right corner (all, watched, unwatched).Of course, the user can access to the details of each movie. This page is the only one that can be accessible offline. 
+ This page contains the movies the user wants to watched or already watched. The user can filter the list by using the searchBar or the navigation at the top right corner (all, watched, unwatched). Of course, the user can access to the details of each movie. This page is the only one that can be accessible offline. 
  
- * **Navigation:** The user can filter the list by displaying all the movies , watched movies or unwatched movies.
+ * **Navigation:** The user can filter the list by displaying all the movies , the watched movies or the unwatched movies.
  
  ![](https://github.com/SilverDove/MyMoviesAndCO/blob/master/ScreenShot_MyMovies%26Co/Watchlist_Navigation.png)
  
