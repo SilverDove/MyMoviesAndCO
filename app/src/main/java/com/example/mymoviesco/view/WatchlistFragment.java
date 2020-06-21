@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +18,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mymoviesco.model.AppDatabase;
+import com.example.mymoviesco.R;
+import com.example.mymoviesco.model.Movie;
+
 import java.util.List;
 
-import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
+import static com.example.mymoviesco.view.HomeFragment.EXTRA_MOVIE;
 
 public class WatchlistFragment extends Fragment {
 

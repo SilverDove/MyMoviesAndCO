@@ -1,10 +1,12 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.mymoviesco.R;
 
 import gr.net.maroulis.library.EasySplashScreen;
 

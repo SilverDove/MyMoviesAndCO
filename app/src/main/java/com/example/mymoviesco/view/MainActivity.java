@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,6 +6,11 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.example.mymoviesco.R;
+import com.example.mymoviesco.view.HomeFragment;
+import com.example.mymoviesco.view.SearchFragment;
+import com.example.mymoviesco.view.WatchlistFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity{

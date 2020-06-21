@@ -1,9 +1,10 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.view;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.mymoviesco.R;
 
 
 public class WatchlistActivity extends AppCompatActivity {

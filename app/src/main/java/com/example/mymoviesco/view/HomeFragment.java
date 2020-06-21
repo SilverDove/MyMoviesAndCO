@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mymoviesco.MovieApiService;
+import com.example.mymoviesco.R;
+import com.example.mymoviesco.model.Movie;
+import com.example.mymoviesco.model.MovieResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

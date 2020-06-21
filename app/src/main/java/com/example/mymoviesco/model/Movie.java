@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

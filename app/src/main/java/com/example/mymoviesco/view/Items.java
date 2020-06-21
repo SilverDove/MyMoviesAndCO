@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.view;
 
 public class Items {
     private int mImage;

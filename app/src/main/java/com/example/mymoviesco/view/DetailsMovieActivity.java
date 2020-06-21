@@ -1,4 +1,4 @@
-package com.example.mymoviesco;
+package com.example.mymoviesco.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,10 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.mymoviesco.model.AppDatabase;
+import com.example.mymoviesco.R;
+import com.example.mymoviesco.model.Movie;
 
 import java.util.List;
-import static com.example.mymoviesco.HomeFragment.EXTRA_MOVIE;
-import static com.example.mymoviesco.MyAdapter.IMAGE_URL_BASE_PATH;
+import static com.example.mymoviesco.view.HomeFragment.EXTRA_MOVIE;
+import static com.example.mymoviesco.view.MyAdapter.IMAGE_URL_BASE_PATH;
 
 public class DetailsMovieActivity extends AppCompatActivity {
 
