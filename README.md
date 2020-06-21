@@ -9,7 +9,7 @@ It is intuitive and optimized for the ease of everyone. Enjoy it!
 
 ## Getting Started
 1. Download and install [Android Studio](https://developer.android.com/studio/)
-2. Clone or download the project via the [master branch](https://github.com/SilverDove/MyMoviesAndCO.git)
+2. Clone or download the project via the [master branch](https://github.com/SilverDove/MyMoviesAndCO.git). It's also possibel to fetch the [release project](https://github.com/SilverDove/MyMoviesAndCO/releases/tag/1.0)
 
 ## Features
 
