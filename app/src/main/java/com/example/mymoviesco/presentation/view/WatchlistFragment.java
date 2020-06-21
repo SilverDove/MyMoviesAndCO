@@ -81,10 +81,13 @@ public class WatchlistFragment extends Fragment {
         inflater.inflate(R.menu.watchlist_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                searchView.setIconified(true);
+                searchView.setIconified(true);
+                mAdapter.getFilter().filter(s);
                 return true;
             }
 
