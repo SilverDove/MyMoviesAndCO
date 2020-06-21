@@ -21,8 +21,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mymoviesco.Internet;
 import com.example.mymoviesco.MovieApiService;
 import com.example.mymoviesco.R;
+import com.example.mymoviesco.controller.SearchController;
 import com.example.mymoviesco.model.Movie;
 import com.example.mymoviesco.model.MovieResponse;
 import com.google.gson.Gson;
@@ -44,6 +46,7 @@ public class SearchFragment extends Fragment {
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
     private TextView SearchStatus;
+    private SearchController controller;
 
     @Nullable
     @Override
@@ -51,14 +54,14 @@ public class SearchFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
         getActivity().setTitle("Search");
 
+        controller = new SearchController(this, v);
+
         SearchStatus = v.findViewById(R.id.SearchStatus);
         SearchStatus.setVisibility(View.VISIBLE);
-        if(isNetworkAvailable()==false){
-
+        if(Internet.isNetworkAvailable(getActivity())==false){
             SearchStatus.setText("There is no internet connection :(");
         }else{
             setHasOptionsMenu(true);
-            Toast.makeText(getContext(), "HELLO", Toast.LENGTH_SHORT).show();
             SearchStatus.setText("You can find movies by using the search bar at the top");
         }
 
@@ -76,26 +79,19 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 SearchStatus.setVisibility(View.INVISIBLE);
-                makeAPICall(getView(), s);
+                controller.makeAPICall(getView(), s);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
                 SearchStatus.setVisibility(View.INVISIBLE);
-                makeAPICall(getView(), s);
+                controller.makeAPICall(getView(), s);
                 return false;
             }
         });
 
         super.onCreateOptionsMenu(menu,inflater);
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void showList(final List<Movie> movieList, View v){
@@ -112,53 +108,8 @@ public class SearchFragment extends Fragment {
         mAdapter.setOnItemListener(new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {//Open new Activity to display details of the movie
-                //Give movie selected in another page
-                Intent intent = new Intent(getContext(), DetailsMovieActivity.class);
-                intent.putExtra(EXTRA_MOVIE, movieList.get(position));//Send position of the movie
-                startActivity(intent);
+                controller.onClickMovie(position, movieList);
             }
         });
     }
-
-    private void makeAPICall(final View v, String movieSearch){
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        MovieApiService movieApiService = retrofit.create(MovieApiService.class);
-        Call<MovieResponse> call = movieApiService.getSearchMovies(API_KEY, movieSearch);
-
-        call.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                if (response.isSuccessful() && response.body() != null){
-                    List<Movie> movies = response.body().getMovieList();
-                    showList(movies, v);
-                    if(movies.size() == 0){
-                        SearchStatus.setText("What? No result? \nWe searched everywhere but we didn't find your request");
-                        SearchStatus.setVisibility(View.VISIBLE);
-                    }
-                }else {
-                    showError();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                showError();
-            }
-        });
-    }
-
-    private void showError(){
-        Toast.makeText(getContext(), "API Error", Toast.LENGTH_SHORT).show();
-    }
-
 }
