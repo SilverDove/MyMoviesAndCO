@@ -24,14 +24,9 @@ import com.example.mymoviesco.model.Movie;
 
 import java.util.List;
 
-import static com.example.mymoviesco.view.HomeFragment.EXTRA_MOVIE;
+import static com.example.mymoviesco.Constant.*;
 
 public class WatchlistFragment extends Fragment {
-
-    public static final String MOVIE_ALL = "com.example.mymoviesco.MOVIE_ALL";
-    public static final String MOVIE_WATCHED = "com.example.mymoviesco.MOVIE_WATCHED";
-    public static final String MOVIE_UNWATCHED = "com.example.mymoviesco.MOVIE_UNWATCHED";
-
     private static String listStatus;
     private static AppDatabase db;
     private Menu m;

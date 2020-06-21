@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,33 +16,23 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mymoviesco.MovieApiService;
 import com.example.mymoviesco.R;
+import com.example.mymoviesco.controller.HomeController;
 import com.example.mymoviesco.model.Movie;
-import com.example.mymoviesco.model.MovieResponse;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class HomeFragment extends Fragment {
+import static com.example.mymoviesco.Constant.*;
 
-    public static final String EXTRA_MOVIE = "com.example.mymoviesco.EXTRA_MOVIE";
+public class HomeFragment extends Fragment {
 
     private RecyclerView mRecyclerView;//contains recycler view created in our XML layout
     private MyAdapter mAdapter;//bridge between our data and our recycler view
     private RecyclerView.LayoutManager mLayoutManager;//aligning items in our list
-
-    private TextView emptyMessage;
-
-    static final String BASE_URL = "https://api.themoviedb.org/3/";
-    final static String API_KEY = "7b570a518d203152ccc9be5b1e0d0388";
+    private HomeController controller;
 
     @Nullable
     @Override
@@ -51,28 +40,32 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home : Top movies");
 
-        emptyMessage = v.findViewById(R.id.emptyMessage);
-            if(isNetworkAvailable()){
-                makeAPICall(v);
-                System.out.println("INTERNET");
-            }else{
-                emptyMessage.setVisibility(View.VISIBLE);
-                System.out.println("NO INTERNET");
-            }
+        controller = new HomeController(this,v,
+                new GsonBuilder()
+                .setLenient()
+                .create(),
+                new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(
+                        new GsonBuilder()
+                        .setLenient()
+                        .create()))
+                .build());
+        controller.onStart();
 
         return v;
     }
 
-    private boolean isNetworkAvailable() {
+    public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void showList(final List<Movie> movieList, View v){
+    public void showList(final List<Movie> movieList){
         /*Initialization*/
-        mRecyclerView = v.findViewById(R.id.recyclerView);
+        mRecyclerView = getView().findViewById(R.id.recyclerView);
         //mRecyclerView.setHasFixedSize(true);//Recycler view doesn't change in size (Increase performance)
         mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new MyAdapter(movieList, getContext());
@@ -89,48 +82,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-    }
-
-    private void makeAPICall(final View v){
-
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        MovieApiService movieApiService = retrofit.create(MovieApiService.class);
-
-        Call<MovieResponse> call = movieApiService.getPopularMovies(API_KEY);
-
-        call.enqueue(new Callback<MovieResponse>() {
-            @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                if (response.isSuccessful() && response.body() != null){
-                    List<Movie> movies = response.body().getMovieList();
-                    if (movies.size()>0){
-                        emptyMessage.setVisibility(View.INVISIBLE);
-                        showList(movies, v);
-                    }else{
-                        emptyMessage.setVisibility(View.VISIBLE);
-                    }
-                }else {
-                    showError();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
-                showError();
-            }
-        });
-    }
-
-    private void showError(){
-        Toast.makeText(getContext(), "API Error", Toast.LENGTH_SHORT).show();
     }
 
 }

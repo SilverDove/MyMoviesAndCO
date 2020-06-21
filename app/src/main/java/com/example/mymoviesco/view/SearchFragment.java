@@ -36,9 +36,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.mymoviesco.view.HomeFragment.API_KEY;
-import static com.example.mymoviesco.view.HomeFragment.BASE_URL;
-import static com.example.mymoviesco.view.HomeFragment.EXTRA_MOVIE;
+import static com.example.mymoviesco.Constant.*;
 
 public class SearchFragment extends Fragment {
 

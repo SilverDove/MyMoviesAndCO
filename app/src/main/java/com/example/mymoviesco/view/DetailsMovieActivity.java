@@ -23,7 +23,8 @@ import com.example.mymoviesco.R;
 import com.example.mymoviesco.model.Movie;
 
 import java.util.List;
-import static com.example.mymoviesco.view.HomeFragment.EXTRA_MOVIE;
+
+import static com.example.mymoviesco.Constant.*;
 import static com.example.mymoviesco.view.MyAdapter.IMAGE_URL_BASE_PATH;
 
 public class DetailsMovieActivity extends AppCompatActivity {
